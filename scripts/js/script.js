@@ -6,21 +6,21 @@ fetch('scripts/perl/script.cgi', {
         start_time: '2021-01-01 09:00:00'
     })
 })
-.then(response => response.json())
-.then(data => console.log(data));
+.then(response => response.json()) //parse the response as JSON
+.then(data => console.log(data)); //data is the response from the server
 
 
 document.getElementById('startTimer').addEventListener('click', function(){
     const duration = 25 * 60; //25 minutes in seconds
-    const display = document.getElementById('timerDisplay');
-    startTimer(duration, display);  
+    const display = document.getElementById('timerDisplay'); //display timer
+    startTimer(duration, display); //start timer
 })
 
 function startTimer(duration, display){
     let timer = duration, minutes, seconds;
     const endInterval = setInterval(function () {
         minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
+        seconds = parseInt(timer % 60, 10); 
 
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
