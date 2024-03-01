@@ -6,7 +6,6 @@ This is a pomodoro clock that I am making to actually help myself. I am also mak
 
 
 
-
 Using Perl together with SQLite for a web application, like the Pomodoro timer you're describing, is entirely doable and can be an excellent way to manage server-side logic and data persistence. However, integrating Perl directly within JavaScript (JS) or HTML pages isn't the typical approach. Instead, you would use Perl as part of the backend to handle HTTP requests, process data, and interact with the SQLite database. Then, the frontend (HTML/CSS/JavaScript) communicates with this backend through HTTP requests, as you've started to outline with your fetch API call to `script.cgi`.
 
 Here's an overview of how this could work:

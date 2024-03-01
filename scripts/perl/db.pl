@@ -1,7 +1,7 @@
 use DBD::mysql; # load DBD::mysql module
 use DBI; # load DBI module
-use strict;
-use warnings;
+use strict; # use strict module
+use warnings; # use warnings module
 
 my $dsn = "DBI:mysql:database=;host=localhost"; # data source name
 my $username = "perl"; # username
