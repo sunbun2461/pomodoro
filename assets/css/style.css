@@ -1,74 +1,115 @@
 * {
-	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 section.clock {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    .clock__heading {
+        margin-bottom: 0;
+        color: #233138;
+        font-size: 3rem;
+        text-align: center;
+    }
+    img.clock__img {
+        max-width: 20rem;
+        margin-bottom: 2rem;
+    }
+    .tasks {
+        .task-item {
+            display: flex;
+            justify-self: center;
+            align-items: center;
+            margin: 0rem auto 2rem;
+            span.task-heading {
+                border-bottom: 2px solid grey;
+                color: grey;
+            }
+            input {
+                width: 20rem;
+                margin-left: 1rem;
+                padding: .5rem;
+                border: 1px solid lightgray;
+                border-radius: 5px;
+            }
+        }
+        div.buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            button {
+                padding: 1rem 2.5rem;
+                background: #F44336;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .button__start {
+                background-color: #38bd38;
+                transition: 75ms;
+            }
+            .button__start:hover {
+                outline: 2px solid #38bd38ad;
+                outline-offset: 2px;
+            }
+            .button__start.inactive {
+                opacity: .3;
+            }
+            .button__pause {
+                display: none;
+                color: black;
+                background: #ffc107;
+                span.pause-symbol {
+                    display: inline;
+                }
+                span.play-symbol {
+                    display: none;
+                }
+            }
+            .button__pause:hover {
+                outline: 2px solid #ffc107ad;
+                outline-offset: 2px;
+            }
+            .button__pause.show {
+                display: block;
+            }
+            .button__pause.paused {
+                span.pause-symbol {
+                    display: none;
+                }
+                span.play-symbol {
+                    display: inline;
+                }
+            }
+        }
+        .button__reset {
+            background: #F44336;
+        }
+        .button__reset:hover {
+            outline: 2px solid #F44336ad;
+            outline-offset: 2px;
+        }
+    }
+}
 
-	h1 {
-		color: #233138;
-		font-size: 3rem;
-		text-align: center;
-	}
-	img.tomato{
-		margin-bottom: 2rem;
-	}
-	.tasks {
-		.task-item {
-			display: flex;
-			justify-self: center;
-			align-items: center;
-			margin:0rem auto 2rem;
-			span.task-heading{
-				border-bottom: 2px solid grey;
-				color: grey;
-			}
-			input {
-				width: 20rem;
-				margin-left: 1rem;
-				padding: .5rem;
-				border: 1px solid lightgray;
-				border-radius: 5px;
-			}
-		}
+.break-modal {
+    margin: 3rem auto;
+    display: none;
+}
 
-		div.buttons {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			gap: 1rem;
-			margin-bottom: 2rem;
-			button { 
-				padding: 1rem 2.5rem;
-				background: #F44336;
-				color: white;
-				border: none;
-				border-radius: 5px;
-				cursor: pointer;
-			}
-			.start{
-				background-color: #38bd38;
-				transition: 75ms;
-			}
-			.start:hover{
-				outline: 2px solid #38bd38ad;
-				outline-offset: 2px;
-			}
-			.pause{
-				display:none;
-			}
-			.pause.active{
-				display:block;
-			}
-		}
-	}
- 
-	.break-modal{
-		margin: 3rem auto;
-		display:none;
-	}
+
+}
+
+}
+.break-modal {
+    margin: 3rem auto;
+    display: none;
+}
+
 }

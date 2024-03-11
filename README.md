@@ -50,3 +50,14 @@ This separation is part of the client-server model, where Perl acts as the serve
 As for adding features like login, you can continue to use Perl and SQLite. You'd implement authentication and session management on the Perl side. This involves creating a new table for user accounts, handling login requests, and managing session tokens or cookies to keep users logged in.
 
 In summary, integrating Perl with a web application for tasks like a Pomodoro timer and future features is not only doable but a solid approach for learning and applying server-side programming concepts.
+
+
+### Capabilities 
+
+
+
+### Data Flow 
+
+
+
+### Progress 
