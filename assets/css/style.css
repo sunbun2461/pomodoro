@@ -58,7 +58,7 @@ section.clock {
                 outline: 2px solid #38bd38ad;
                 outline-offset: 2px;
             }
-            .button__start.inactive {
+            .button__start.grey-out {
                 opacity: .3;
                 cursor: not-allowed;
                 pointer-events: none;

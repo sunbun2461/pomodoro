@@ -1,169 +1,163 @@
 const pomodoroState = {
-    timer: {
-        currentCountTime: 25 * 60, // 25 minutes in seconds
-        isActive: false, // this is in session but paused
-        isPaused: false, // paused or not
-        currentMinutes: 0,
-        currentSeconds: 0,
-    },
-    sessions: {
-        sessionType: 'work',
-        sessionDescription: '', // user input
-        completedWorkSessionsCount: 0,
-        currentSession: 0,
-        work: {
-            completedWorkSessionsCount: 0,
-            targetWorkSessionsBeforeLongBreak: 4,
-        },
-        breaks: {
-            completedBreakSessionsCount: 0,
-        }
-
-    },
-    settings: {
-        workDuration: 25 * 60, // 25 minutes in seconds
-        shortBreakDuration: 5 * 60, // 5 minutes in seconds
-        longBreakDuration: 15 * 60 // 15 minutes in seconds
-    }
+	timer: {
+		currentCountTime: 25 * 60, // 25 minutes in seconds
+		isActive: false, // this is in session but paused
+		isPaused: false, // paused or not
+		currentMinutes: 0,
+		currentSeconds: 0
+	},
+	sessions: {
+		sessionType: 'work',
+		sessionDescription: '', // user input
+		completedWorkSessionsCount: 0,
+		currentSession: 0,
+		work: {
+			completedWorkSessionsCount: 0,
+			targetWorkSessionsBeforeLongBreak: 4
+		},
+		breaks: {
+			completedBreakSessionsCount: 0
+		}
+	},
+	settings: {
+		workDuration: 25 * 60, // 25 minutes in seconds
+		shortBreakDuration: 5 * 60, // 5 minutes in seconds
+		longBreakDuration: 15 * 60 // 15 minutes in seconds
+	}
 }
 
-
-
-
-pomodoroState.timer.currentMinutes = Math.floor(pomodoroState.timer.currentCountTime / 60);
-pomodoroState.timer.currentSeconds = pomodoroState.timer.currentCountTime % 60;
-
-
+//set here because cant use currentCountTime before its initialized which I was tyring to do
+pomodoroState.timer.currentMinutes = Math.floor(
+	pomodoroState.timer.currentCountTime / 60
+)
+pomodoroState.timer.currentSeconds = pomodoroState.timer.currentCountTime % 60
 
 // declarations
-const display = document.getElementById('timerDisplay');
-const startButton = document.querySelector('#startButton');
-const pauseButton = document.querySelector('#pauseButton');
-const resetButton = document.querySelector('#resetButton');
-let endInterval;
-
-
-
-
+const timerDisplay = document.querySelector('#timerDisplay')
+const startButton = document.querySelector('#startButton')
+const pauseButton = document.querySelector('#pauseButton')
+const resetButton = document.querySelector('#resetButton')
+const takeBreak = document.querySelector('#takeBreak')
+const doc = document
+let endInterval
 
 // functions
 
 function updateUI() {
-    if (pomodoroState.timer.isActive) { // update to reference pomodoroState.timer.isActive
-        pauseButton.classList.add('show');
-        startButton.classList.add('inactive');
-    } else {
-        pauseButton.classList.add('show');
-        startButton.classList.add('inactive');
-    }
+	if (pomodoroState.timer.isActive) {
+		// update to reference pomodoroState.timer.isActive
+		pauseButton.classList.add('show')
+		startButton.classList.add('grey-out')
+	} else {
+		pauseButton.classList.remove('show')
+		startButton.classList.remove('grey-out')
+	}
 }
 
 const timerActivate = () => {
-    const { timer, sessions } = pomodoroState;
-    timer.isActive = true;
-    sessions.currentSession++;
-};
-
-
+	const {
+		timer,
+		sessions
+	} = pomodoroState
+	timer.isActive = true
+	sessions.currentSession++
+}
 
 timerPause = () => {
-    const { timer } = pomodoroState;
+	const {
+		timer
+	} = pomodoroState
 
-    if (!timer.isPaused) {
-        timer.isPaused = true;
-        pauseButton.classList.add('paused');
-        clearInterval(endInterval);
-    } else {
-        timer.isPaused = false; // unpause
-        pauseButton.classList.remove('paused');
-        // const display = document.getElementById('timerDisplay'); // display timer
-        startTimer(timer.currentCountTime, display); // start timer from where it was paused
-    }
-
+	if (!timer.isPaused) {
+		timer.isPaused = true
+		pauseButton.classList.add('paused')
+		clearInterval(endInterval)
+	} else {
+		timer.isPaused = false // unpause
+		pauseButton.classList.remove('paused')
+		// const display = document.getElementById('timerDisplay'); // display timer
+		startTimer(timer.currentCountTime, timerDisplay) // start timer from where it was paused
+	}
 }
 
 timerReset = () => {
-    const { timer } = pomodoroState;
-    clearInterval(endInterval);
-    timer.isActive = false;
-    timer.isPaused = false;
-    pauseButton.classList.remove('show');
-    timerCount(pomodoroState.settings.workDuration);
-    timer.currentSeconds = `00`;
-    display.textContent = `${timer.currentMinutes}:${timer.currentSeconds}`;
-    pauseButton.classList.remove('paused');
-    startButton.classList.remove('inactive');
-
+	const { timer } = pomodoroState
+	clearInterval(endInterval)
+	timer.isActive = false
+	timer.isPaused = false
+	pauseButton.classList.remove('show')
+	timerCount()
+	timer.currentSeconds = `00`
+	display.textContent = `${timer.currentMinutes}:${timer.currentSeconds}`
+	updateUI();
 }
 
-
-function timerCount(timer) {
-    pomodoroState.timer.currentCountTime = timer;
-    pomodoroState.timer.currentMinutes = Math.floor(timer / 60);
-    pomodoroState.timer.currentSeconds = timer % 60;
+const timerCount = timer => {
+	pomodoroState.timer.currentCountTime = timer
+	pomodoroState.timer.currentMinutes = Math.floor(timer / 60)
+	pomodoroState.timer.currentSeconds = timer % 60
 }
-
-
-
-
-// # how to show tree two levels down with cli tree command. # tree -L 2
-
-/* Event Listeners */
 
 // start timer
 
-function startTimer(duration, display) {
-    let timer = duration,
-        minutes, seconds;
-    endInterval = setInterval(function() {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-        display.textContent = `${minutes}:${seconds}`;
+const startTimer = (duration, display) => {
+	display = timerDisplay
 
+	console.log(display)
+	let timer = duration,
+		minutes,
+		seconds
+	const updateTimer = () => {
+		//   minutes = parseInt(timer / 60, 10)
+		minutes = pomodoroState.timer.currentMinutes
+		console.log(minutes)
+		//   seconds = parseInt(timer % 60, 10)
+		seconds = pomodoroState.timer.currentSeconds
+		console.log(seconds)
+		minutes = minutes < 10 ? '0' + minutes : minutes
+		seconds = seconds < 10 ? '0' + seconds : seconds
+		display.textContent = `${minutes}:${seconds}`
 
-        if (--timer < 0) {
-            clearInterval(endInterval);
-            document.getElementById(breakPopup).style.display = 'block';
-        }
-        timerCount(timer);
-        console.log(JSON.stringify(pomodoroState, null, 2));
-    }, 1000)
+		if (--timer < 0) {
+			clearInterval(endInterval)
+			document.getElementById(breakPopup).style.display = 'block'
+		}
+		timerCount(timer)
+		console.log(JSON.stringify(pomodoroState, null, 2))
+	}
+	updateTimer()
+	endInterval = setInterval(updateTimer, 1000)
 }
 
-document.getElementById('startButton').addEventListener('click', function() {
-    const duration = 25 * 60; // 25 minutes in seconds
-    startTimer(duration, display); // start timer
-    timerActivate(); // activate timer; ---maybe where we are failing
-    updateUI();
-})
+/* Event Listeners */
 
-function addClickListener(id, callback) {
-    const element = document.querySelector(id);
-    if (element) {
-        element.addEventListener('click', callback);
-    }
+function addClickListener(element, callback) {
+	if (element) {
+		element.addEventListener('click', callback)
+	}
 }
 
-addClickListener('#pauseButton', function() {
-    timerPause();
-});
-
-addClickListener('#resetButton', function() {
-    timerReset();
-});
-
-addClickListener('#takeBreak', function() {
-    document.getElementById('breakPopup').style.display = 'none';
-});
-
-
-document.addEventListener('click', function() {
-    console.log(JSON.stringify(pomodoroState, null, 2));
-
+addClickListener(startButton, function () {
+	startTimer(pomodoroState.timer.currentCountTime, timerDisplay) // start timer
+	timerActivate() // activate timer; ---maybe where we are failing
+	updateUI()
 })
 
+addClickListener(pauseButton, function () {
+	timerPause()
+})
+
+addClickListener(resetButton, function () {
+	timerReset()
+})
+
+addClickListener(takeBreak, function () {
+	document.getElementById('breakPopup').style.display = 'none'
+})
+
+addClickListener(doc, function () {
+	console.log(JSON.stringify(pomodoroState, null, 2))
+})
 
 /* perl api */
 
@@ -182,10 +176,7 @@ document.addEventListener('click', function() {
 //     .then(response => response.json()) // parse the response as JSON
 //      .then(data => console.log(data)); // data is the response from the server
 
-
-
 /* probably not needed */
-
 
 // const timerPause = () => {
 //     const { timer } = pomodoroState;
@@ -203,3 +194,5 @@ document.addEventListener('click', function() {
 //         startTimer(timer.currentCountTime, display); // start timer
 //     }
 // };
+
+// # how to show tree two levels down with cli tree command. # tree -L 2
