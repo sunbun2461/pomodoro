@@ -60,6 +60,8 @@ section.clock {
             }
             .button__start.inactive {
                 opacity: .3;
+                cursor: not-allowed;
+                pointer-events: none;
             }
             .button__pause {
                 display: none;

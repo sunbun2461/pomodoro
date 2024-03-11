@@ -1,22 +1,29 @@
 const pomodoroState = {
     timer: {
-        currentCountTime: 25 * 60, //25 minutes in seconds
+        currentCountTime: 25 * 60, // 25 minutes in seconds
         isActive: false, // this is in session but paused
-        isPaused: false, //paused or not
+        isPaused: false, // paused or not
         currentMinutes: 0,
         currentSeconds: 0,
     },
     sessions: {
         sessionType: 'work',
-        sessionDescription: '',
-        workSessionsCount: 0,
+        sessionDescription: '', // user input
+        completedWorkSessionsCount: 0,
         currentSession: 0,
-        targetWorkSessionsBeforeLongBreak: 4,
+        work: {
+            completedWorkSessionsCount: 0,
+            targetWorkSessionsBeforeLongBreak: 4,
+        },
+        breaks: {
+            completedBreakSessionsCount: 0,
+        }
+
     },
     settings: {
-        workDuration: 25 * 60, //25 minutes in seconds
-        shortBreakDuration: 5 * 60, //5 minutes in seconds
-        longBreakDuration: 15 * 60 //15 minutes in seconds
+        workDuration: 25 * 60, // 25 minutes in seconds
+        shortBreakDuration: 5 * 60, // 5 minutes in seconds
+        longBreakDuration: 15 * 60 // 15 minutes in seconds
     }
 }
 
@@ -28,20 +35,24 @@ pomodoroState.timer.currentSeconds = pomodoroState.timer.currentCountTime % 60;
 
 
 
-//declarations
+// declarations
 const display = document.getElementById('timerDisplay');
 const startButton = document.querySelector('#startButton');
 const pauseButton = document.querySelector('#pauseButton');
+const resetButton = document.querySelector('#resetButton');
 let endInterval;
 
 
 
 
 
-//functions
+// functions
 
 function updateUI() {
     if (pomodoroState.timer.isActive) { // update to reference pomodoroState.timer.isActive
+        pauseButton.classList.add('show');
+        startButton.classList.add('inactive');
+    } else {
         pauseButton.classList.add('show');
         startButton.classList.add('inactive');
     }
@@ -50,8 +61,7 @@ function updateUI() {
 const timerActivate = () => {
     const { timer, sessions } = pomodoroState;
     timer.isActive = true;
-    timer.currentSession = sessions.currentSession++;
-
+    sessions.currentSession++;
 };
 
 
@@ -64,11 +74,25 @@ timerPause = () => {
         pauseButton.classList.add('paused');
         clearInterval(endInterval);
     } else {
-        timer.isPaused = false; //unpause
+        timer.isPaused = false; // unpause
         pauseButton.classList.remove('paused');
-        // const display = document.getElementById('timerDisplay'); //display timer
-        startTimer(timer.currentCountTime, display); //start timer from where it was paused
+        // const display = document.getElementById('timerDisplay'); // display timer
+        startTimer(timer.currentCountTime, display); // start timer from where it was paused
     }
+
+}
+
+timerReset = () => {
+    const { timer } = pomodoroState;
+    clearInterval(endInterval);
+    timer.isActive = false;
+    timer.isPaused = false;
+    pauseButton.classList.remove('show');
+    timerCount(pomodoroState.settings.workDuration);
+    timer.currentSeconds = `00`;
+    display.textContent = `${timer.currentMinutes}:${timer.currentSeconds}`;
+    pauseButton.classList.remove('paused');
+    startButton.classList.remove('inactive');
 
 }
 
@@ -82,20 +106,11 @@ function timerCount(timer) {
 
 
 
-
-
 // # how to show tree two levels down with cli tree command. # tree -L 2
 
 /* Event Listeners */
 
 // start timer
-document.getElementById('startButton').addEventListener('click', function() {
-    const duration = 25 * 60; //25 minutes in seconds
-    // const display = document.getElementById('timerDisplay'); //display timer
-    startTimer(duration, display); //start timer
-    timerActivate() //activate timer; ---maybe where we are failing
-    updateUI();
-})
 
 function startTimer(duration, display) {
     let timer = duration,
@@ -117,6 +132,13 @@ function startTimer(duration, display) {
     }, 1000)
 }
 
+document.getElementById('startButton').addEventListener('click', function() {
+    const duration = 25 * 60; // 25 minutes in seconds
+    startTimer(duration, display); // start timer
+    timerActivate(); // activate timer; ---maybe where we are failing
+    updateUI();
+})
+
 function addClickListener(id, callback) {
     const element = document.querySelector(id);
     if (element) {
@@ -129,7 +151,7 @@ addClickListener('#pauseButton', function() {
 });
 
 addClickListener('#resetButton', function() {
-    // clearInterval(endInterval);
+    timerReset();
 });
 
 addClickListener('#takeBreak', function() {
@@ -157,8 +179,8 @@ document.addEventListener('click', function() {
 //             start_time: '2021-01-01 09:00:00'
 //         })
 //     })
-//     .then(response => response.json()) //parse the response as JSON
-//     .then(data => console.log(data)); //data is the response from the server
+//     .then(response => response.json()) // parse the response as JSON
+//      .then(data => console.log(data)); // data is the response from the server
 
 
 
@@ -177,7 +199,7 @@ document.addEventListener('click', function() {
 //     const { timer } = pomodoroState;
 //     if (timer.isPaused) {
 //         timer.isPaused = false;
-//         const display = document.getElementById('timerDisplay'); //display timer
-//         startTimer(timer.currentCountTime, display); //start timer
+//         const display = document.getElementById('timerDisplay'); // display timer
+//         startTimer(timer.currentCountTime, display); // start timer
 //     }
 // };
