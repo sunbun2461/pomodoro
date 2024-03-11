@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="assets/css/style.css">
-	<title>Pomodoro</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Pomodoro</title>
 </head>
+
 <body>
-	<main class="clock-container">
-		<section class="clock">
-			<h1>Pomodoro Clock</h1>
-			<img src="" alt="Tomato Clock" class="tomato">
-			<div class="tasks">
-				<div class="task-item">
-					<!-- <span class="task-heading">Task:</span> -->
-					<input type="text" class="task-input" id="taskName" placeholder="Enter Task Name">
-				</div>
-				<div class="buttons">
-					<button class="start" id="startTimer">START</button>
-					<button class="pause">||</button>
-				</div>
-			</div>
-			<div id="timerDisplay">00:00</span>
-			</div>
-			<div class="break-modal" id="breakPopup">
-				<p>Take a break? I mean Give me a break. Give me a break. Break me off a peice of that KitKat BAR!</p>
-				<button id="takeBreak">Take a Break</button>
-			</div>
-		</section>
-	</main>
+    <main class="clock-container">
+        <section class="clock">
+            <h1 class="clock__heading">Pomodoro Clock</h1>
+            <img src="assets/img/tomato.png" alt="Tomato Clock" class="clock__img">
+            <div class="tasks">
+                <div class="task-item">
+                    <!-- <span class="task-heading">Task:</span> -->
+                    <input type="text" class="task-input" id="taskName" placeholder="Enter Task Name">
+                </div>
+                <div class="buttons">
+                    <button class="button__start" id="startButton">START</button>
+                    <button class="button__reset" id="resetButton">RESET</button>
+                    <button class="button__pause" id="pauseButton"><span class="pause-symbol">||</span><span class="play-symbol">&#9654;</span></button>
+
+                </div>
+            </div>
+            <div id="timerDisplay">25:00</span>
+            </div>
+            <div class="break-modal" id="breakPopup">
+                <p>Take a break? I mean Give me a break. Give me a break. Break me off a peice of that KitKat BAR!</p>
+                <button id="takeBreak">Take a Break</button>
+            </div>
+        </section>
+    </main>
 </body>
+
 </html>
-<script src="scripts/js/script.js"></script>
+<script async src="scripts/js/script.js"></script>
