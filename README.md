@@ -1,4 +1,4 @@
-# Pomodoro Clock that integrated with SQL
+# Pomodoro Clock that integrated with SQL and Perl
 
 ## Overview
 
