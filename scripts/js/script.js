@@ -9,11 +9,15 @@ const pomodoroState = {
     sessions: {
         sessionType: "work",
         sessionDescription: "", // user input
-        completedWorkSessionsCount: 0,
         currentSession: 0,
+        completedWorkSessionsCount: 0,
+        completedShortBreak: 0,
+        completedLongBreak: 0,
+
         work: {
             completedWorkSessionsCount: 0,
-            targetWorkSessionsBeforeLongBreak: 4,
+            targetWorkSesssionsBeforeShortBreak: 1,
+            targetShortBreaksBeforeLongBreak: 2,
         },
         breaks: {
             completedBreakSessionsCount: 0,
@@ -38,6 +42,8 @@ const startButton = document.querySelector("#startButton");
 const pauseButton = document.querySelector("#pauseButton");
 const resetButton = document.querySelector("#resetButton");
 const takeBreak = document.querySelector("#takeBreak");
+const taskName = document.querySelector('#taskName')
+let taskDisplayElement = document.querySelector(`.taskDisplay li[data-id="1"]`)
 const doc = document;
 let endInterval;
 
@@ -125,7 +131,7 @@ const startTimer = (duration) => {
 };
 
 
-const onTimerEnd = () => {};
+const onTimerEnd = () => { };
 
 
 /* Event Listeners */
@@ -136,27 +142,33 @@ function addClickListener(element, callback) {
     }
 }
 
-addClickListener(startButton, function() {
+addClickListener(startButton, function () {
+    const { sessions } = pomodoroState
+    let taskValue = taskName.value
+    console.log(taskValue)
+    sessions.sessionDescription = taskValue
+    taskDisplayElement.innerText = taskValue
     startTimer(pomodoroState.settings.workDuration); // start timer
     timerActivate(); // activate timer
     updateUI();
 });
 
-addClickListener(pauseButton, function() {
+addClickListener(pauseButton, function () {
     timerPause();
 });
 
-addClickListener(resetButton, function() {
+addClickListener(resetButton, function () {
     timerReset();
 });
 
-addClickListener(takeBreak, function() {
+addClickListener(takeBreak, function () {
     document.getElementById("breakPopup").style.display = "none";
 });
 
-addClickListener(doc, function() {
+addClickListener(doc, function () {
     console.log(JSON.stringify(pomodoroState, null, 2));
 });
+
 
 /* perl api */
 
