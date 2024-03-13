@@ -98,6 +98,14 @@ section.clock {
             outline-offset: 2px;
         }
     }
+    .task-display__wrap {
+        margin-top: 2rem;
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+    }
 }
 
 .break-modal {
@@ -105,13 +113,7 @@ section.clock {
     display: none;
 }
 
-
-}
-
-}
 .break-modal {
     margin: 3rem auto;
     display: none;
-}
-
 }
