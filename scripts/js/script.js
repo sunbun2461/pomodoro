@@ -7,26 +7,28 @@ const pomodoroState = {
         currentSeconds: 0,
     },
     sessions: {
-        sessionType: "work",
+        sessionType: ["work", "shortBreak", "longBreak"],
+        sessionTypeActive: "work",
         sessionDescription: "", // user input
         currentSession: 0,
         completedWorkSessionsCount: 0,
         completedShortBreak: 0,
         completedLongBreak: 0,
-
+        totalCompletedSessions: 0,
         work: {
             completedWorkSessionsCount: 0,
-            targetWorkSesssionsBeforeShortBreak: 1,
-            targetShortBreaksBeforeLongBreak: 2,
         },
         breaks: {
             completedBreakSessionsCount: 0,
+            targetWorkSessionsBeforeShortBreak: 1,
+            targetShortBreaksBeforeLongBreak: 2,
+            breakModal: false,
         },
     },
     settings: {
-        workDuration: 25 * 60, // 25 minutes in seconds
-        shortBreakDuration: 5 * 60, // 5 minutes in seconds
-        longBreakDuration: 15 * 60, // 15 minutes in seconds
+        workDuration: 4 /* 25 * 60 */ , // 25 minutes in seconds
+        shortBreakDuration: 4 /* 5 * 60 */ , // 5 minutes in seconds
+        longBreakDuration: 4 /* 15 * 60 */ , // 15 minutes in seconds
     },
 };
 
@@ -41,15 +43,25 @@ const timerDisplay = document.querySelector("#timerDisplay");
 const startButton = document.querySelector("#startButton");
 const pauseButton = document.querySelector("#pauseButton");
 const resetButton = document.querySelector("#resetButton");
+const breakModalWrap = document.querySelector(".break-modal__wrap");
 const takeBreak = document.querySelector("#takeBreak");
-const taskName = document.querySelector('#taskName')
-let taskDisplayElement = document.querySelector(`.task-display__wrap li[data-id="1"]`)
+const taskName = document.querySelector("#taskName");
+const breakModalShort = document.querySelector("#breakModalShort");
+const breakModalLong = document.querySelector("#breakModalLong");
+let taskDisplayElement = document.querySelector(
+    `.task-display__wrap li[data-id="1"]`
+);
 const doc = document;
+const body = document.querySelector("body");
 let endInterval;
+const onTimerEnd = () => {};
+
+
 
 // functions
 
 function updateUI() {
+    const { timer, sessions } = pomodoroState;
     if (pomodoroState.timer.isActive) {
         // update to reference pomodoroState.timer.isActive
         pauseButton.classList.add("show");
@@ -58,7 +70,67 @@ function updateUI() {
         pauseButton.classList.remove("show");
         startButton.classList.remove("grey-out");
     }
+    if (sessions.breaks.breakModal) {
+        breakModalWrap.classList.add("show");
+        body.classList.add("hidden");
+    } else {
+        breakModalWrap.classList.remove("show");
+        body.classList.remove("hidden");
+    }
 }
+
+
+
+const startTimer = (duration, type) => {
+    const { sessions } = pomodoroState;
+    let display = timerDisplay;
+    console.log(display);
+    let timer = duration,
+        minutes,
+        seconds;
+    // type[0] ? startButton.classList.add('grey-out') : startButton.classList.remove('grey-out');
+    sessions.sessionTypeActive = type;
+    startButton.classList.add("grey-out");
+    pauseButton.classList.add("show");
+    const updateTimer = () => {
+        //   minutes = parseInt(timer / 60, 10)
+        timerCount(timer);
+        minutes = pomodoroState.timer.currentMinutes;
+        console.log(minutes);
+        seconds = pomodoroState.timer.currentSeconds;
+        console.log(seconds);
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display.textContent = `${minutes}:${seconds}`;
+        timer--;
+        if (timer < 0) {
+            if (type === "work") {
+                console.log("work")
+                sessions.completedWorkSessionsCount++;
+                breakModals(type);
+            }
+            if (type === "shortBreak") {
+                sessions.completedShortBreak++;
+                breakModals(type);
+
+            }
+            if (type === "longBreak") {
+                sessions.completedLongBreak++;
+                breakModals(type);
+            }
+            sessions.totalCompletedSessions++;
+            clearInterval(endInterval);
+            timerReset();
+            updateUI();
+        }
+        console.log(JSON.stringify(pomodoroState, null, 2));
+    };
+    timer--;
+    updateTimer();
+    endInterval = setInterval(updateTimer, 1000);
+};
+
+
 
 const timerActivate = () => {
     const { timer, sessions } = pomodoroState;
@@ -82,14 +154,16 @@ timerPause = () => {
 };
 
 timerReset = () => {
-    const { timer } = pomodoroState;
+    const { timer, sessions } = pomodoroState;
     timer.isActive = false;
     timer.isPaused = false;
+    sessions.sessionTypeActive = null
+    startButton.classList.remove("grey-out");
     pauseButton.classList.remove("show");
     clearInterval(endInterval);
     timerCount(1500);
     timerDisplay.textContent = `${timer.currentMinutes}:${timer.currentSeconds}0`;
-    updateUI();
+
 };
 
 const timerCount = (timer) => {
@@ -98,40 +172,14 @@ const timerCount = (timer) => {
     pomodoroState.timer.currentSeconds = timer % 60;
 };
 
-
-// start timer
-
-const startTimer = (duration) => {
-    let display = timerDisplay;
-    console.log(display);
-    let timer = duration,
-        minutes,
-        seconds;
-    const updateTimer = () => {
-        //   minutes = parseInt(timer / 60, 10)
-        timerCount(timer);
-        minutes = pomodoroState.timer.currentMinutes;
-        console.log(minutes);
-        seconds = pomodoroState.timer.currentSeconds;
-        console.log(seconds);
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-        display.textContent = `${minutes}:${seconds}`;
-        timer--;
-        if (timer < 0) {
-            clearInterval(endInterval);
-            timerReset();
-            document.getElementById(breakPopup).style.display = "block";
-        }
-        console.log(JSON.stringify(pomodoroState, null, 2));
-    };
-    timer--;
-    updateTimer();
-    endInterval = setInterval(updateTimer, 1000);
+const breakModals = (type) => {
+    const { sessions } = pomodoroState;
+    type === "work" ? sessions.breaks.breakModal = true : sessions.breaks.breakModal = false;
+    (sessions.totalCompletedSessions % 3 === 0) ? (breakModalLong.classList.add("show"), breakModalShort.classList.add("hide")) : (breakModalLong.classList.remove("show"), breakModalShort.classList.remove("hide"));
+    updateUI();
 };
 
 
-const onTimerEnd = () => {};
 
 
 /* Event Listeners */
@@ -143,14 +191,13 @@ function addClickListener(element, callback) {
 }
 
 addClickListener(startButton, function() {
-    const { sessions } = pomodoroState
-    let taskValue = taskName.value
-    console.log(taskValue)
-    sessions.sessionDescription = taskValue
-    taskDisplayElement.innerText = taskValue
-    startTimer(pomodoroState.settings.workDuration); // start timer
+    const { timer, sessions, settings } = pomodoroState;
+    let taskValue = taskName.value;
+    console.log(taskValue);
+    sessions.sessionDescription = taskValue;
+    taskDisplayElement.innerText = taskValue;
+    startTimer(settings.workDuration, sessions.sessionType[0]); // start timer
     timerActivate(); // activate timer
-    updateUI();
 });
 
 addClickListener(pauseButton, function() {
@@ -162,13 +209,14 @@ addClickListener(resetButton, function() {
 });
 
 addClickListener(takeBreak, function() {
-    document.getElementById("breakPopup").style.display = "none";
+    const { settings } = pomodoroState;
+    breakModals();
+    startTimer(settings.shortBreakDuration, "shortBreak");
 });
 
 addClickListener(doc, function() {
     console.log(JSON.stringify(pomodoroState, null, 2));
 });
-
 
 /* perl api */
 

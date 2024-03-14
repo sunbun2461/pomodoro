@@ -39,15 +39,17 @@
                     <li data-id="1"></li>
                 </ul>
             </div>
-            <div class="break-modal" id="breakPopup">
-                <p>Take a break? I mean Give me a break. Give me a break. Break me off a peice of that KitKat BAR!</p>
-                <button class="break-modal__button" id="takeBreak">Take a Break</button>
-            </div>
-        </section>
-        <section class="funny" style="width: 50rem;margin: 20rem auto 25rem;">
-
-            <div style="position: relative; width: 25rem; padding-bottom: 56.25%;margin:auto;">
-                <iframe style="position:absolute; width:100%; height:100%;" src="https://trailers.getyarn.io/yarn-clip/5345a6cc-f58e-4e35-b860-a034c8d14278/embed?autoplay=false&responsive=true" frameborder="0"></iframe>
+            <div class="break-modal__wrap" id="breakPopup">
+                <div class="break-modal__inner">
+                    <div class="break-modal__short" id="breakModalShort">
+                        <p><span><em>Take a break?</em></span><br><br><small>Give me a break.<br> Break me off a peice of that</small><br><br> <strong>KitKat BAR!</strong></p>
+                        <button class="break-modal__button" id="takeBreak">Take a Break</button>
+                    </div>
+                    <div class="break-modal__long" id="breakModalLong">
+                        <p><span><em>You must REALLY need to Take a break!</em></span><br><br><small>Give me a break.<br> Break me off a peice of that</small><br><br> <strong>KitKat BAR!</strong></p>
+                        <button class="break-modal__button" id="takeLongBreak">Take a Long Break</button>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

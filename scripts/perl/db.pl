@@ -1,13 +1,6 @@
-<<<<<<< HEAD
-use DBD::mysql; # load DBD::mysql module
-use DBI; # load DBI module
-use strict; # use strict module
-use warnings; # use warnings module
-=======
 use DBI;
 use strict;
 use warnings;
->>>>>>> devel
 
 my $dsn = "dbi:SQLite:dbname=pomodoro.db"; # data source name
 
