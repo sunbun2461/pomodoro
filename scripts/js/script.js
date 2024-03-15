@@ -15,6 +15,7 @@ const pomodoroState = {
         completedShortBreak: 0,
         completedLongBreak: 0,
         totalCompletedSessions: 0,
+        nextSessionAttempt: 0,
         work: {
             completedWorkSessionsCount: 0,
         },
@@ -45,6 +46,7 @@ const pauseButton = document.querySelector("#pauseButton");
 const resetButton = document.querySelector("#resetButton");
 const breakModalWrap = document.querySelector(".break-modal__wrap");
 const takeBreak = document.querySelector("#takeBreak");
+const takeLongBreak = document.querySelector("#takeLongBreak");
 const taskName = document.querySelector("#taskName");
 const breakModalShort = document.querySelector("#breakModalShort");
 const breakModalLong = document.querySelector("#breakModalLong");
@@ -107,18 +109,18 @@ const startTimer = (duration, type) => {
             if (type === "work") {
                 console.log("work")
                 sessions.completedWorkSessionsCount++;
-                breakModals(type);
             }
             if (type === "shortBreak") {
                 sessions.completedShortBreak++;
-                breakModals(type);
 
             }
             if (type === "longBreak") {
                 sessions.completedLongBreak++;
-                breakModals(type);
             }
             sessions.totalCompletedSessions++;
+            sessions.nextSessionAttempt = sessions.totalCompletedSessions + 1;
+            breakModals(type);
+            console.log('nextSessionAttempt ' + sessions.nextSessionAttempt);
             clearInterval(endInterval);
             timerReset();
             updateUI();
@@ -175,7 +177,7 @@ const timerCount = (timer) => {
 const breakModals = (type) => {
     const { sessions } = pomodoroState;
     type === "work" ? sessions.breaks.breakModal = true : sessions.breaks.breakModal = false;
-    (sessions.totalCompletedSessions % 3 === 0) ? (breakModalLong.classList.add("show"), breakModalShort.classList.add("hide")) : (breakModalLong.classList.remove("show"), breakModalShort.classList.remove("hide"));
+    (sessions.nextSessionAttempt > 3 && sessions.nextSessionAttempt % 3 === 0) ? (breakModalLong.classList.add("show"), breakModalShort.classList.add("hide")) : (breakModalLong.classList.remove("show"), breakModalShort.classList.remove("hide"));
     updateUI();
 };
 
@@ -198,6 +200,8 @@ addClickListener(startButton, function() {
     taskDisplayElement.innerText = taskValue;
     startTimer(settings.workDuration, sessions.sessionType[0]); // start timer
     timerActivate(); // activate timer
+
+    sendDataToServer(taskValue);
 });
 
 addClickListener(pauseButton, function() {
@@ -214,44 +218,38 @@ addClickListener(takeBreak, function() {
     startTimer(settings.shortBreakDuration, "shortBreak");
 });
 
+
+addClickListener(takeLongBreak, function() {
+    const { settings } = pomodoroState;
+    breakModals();
+    startTimer(settings.longBreakDuration, "longBreak");
+});
+
 addClickListener(doc, function() {
     console.log(JSON.stringify(pomodoroState, null, 2));
 });
 
 /* perl api */
 
-// addClickListener('document', function() {
-//     console.log(JSON.stringify(pomodoroState, null, 2));
-// })
 
-// fetch('scripts/perl/script.cgi', { /*explain how this works and what it does. # This is a POST request to the server, the server will run the script and return the result, which is then parsed as JSON, and then logged to the console., */
-//         method: 'POST', // *GET, POST, PUT, DELETE, etc.
-//         header: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({
-//             description: 'Task Description',
-//             start_time: '2021-01-01 09:00:00'
-//         })
-//     })
-//     .then(response => response.json()) // parse the response as JSON
-//      .then(data => console.log(data)); // data is the response from the server
+function sendDataToServer(taskValue) {
+    return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/db.pl', { // Your POST endpoint
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                description: taskValue,
+                start_time: new Date().toISOString()
+            })
+        })
+        .then(response => response.json()) // parse the response as JSON
+        .then(data => console.log(data)) // data is the response from the server
+        .catch(error => console.error('Error:', error))
+}
 
-/* probably not needed */
+fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/api.pl')
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error))
 
-// const timerPause = () => {
-//     const { timer } = pomodoroState;
-//     if (!timer.isPaused) {
-//         timer.isPaused = true;
-//         clearInterval(endInterval);
-//     }
-// };
-
-// const timerResume = () => {
-//     const { timer } = pomodoroState;
-//     if (timer.isPaused) {
-//         timer.isPaused = false;
-//         const display = document.getElementById('timerDisplay'); // display timer
-//         startTimer(timer.currentCountTime, display); // start timer
-//     }
-// };
 
 // # how to show tree two levels down with cli tree command. # tree -L 2
