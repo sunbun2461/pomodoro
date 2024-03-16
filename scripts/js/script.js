@@ -233,7 +233,7 @@ addClickListener(doc, function() {
 
 
 function sendDataToServer(taskValue) {
-    return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/db.pl', { // Your POST endpoint
+    return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/main.pl', { // Your POST endpoint
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
