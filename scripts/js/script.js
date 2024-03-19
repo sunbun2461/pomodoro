@@ -232,18 +232,37 @@ addClickListener(doc, function() {
 /* perl api */
 
 
-function sendDataToServer(taskValue) {
-    return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/main.pl', { // Your POST endpoint
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+function login(username, password) {
+    return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/login.pl', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        })
+        .then(response => response.json())
+        .catch(error => console.error('Error:', error));
+}
+
+function signUp(username, password) {
+    return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/signup.pl', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        })
+        .then(response => response.json())
+        .catch(error => console.error('Error:', error));
+}
+
+function insertTask(taskValue) {
+    return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/insert_task.pl', {
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 description: taskValue,
                 start_time: new Date().toISOString()
             })
         })
-        .then(response => response.json()) // parse the response as JSON
-        .then(data => console.log(data)) // data is the response from the server
-        .catch(error => console.error('Error:', error))
+        .then(response => response.json())
+        .catch(error => console.error('Error:', error));
 }
 
 fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/api.pl')
