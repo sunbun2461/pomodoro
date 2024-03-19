@@ -3,6 +3,8 @@ use CGI;
 use JSON;
 use strict;
 use warnings;
+use lib '.';
+use db;
 
 my $cgi = CGI->new;
 print $cgi->header('application/json');
@@ -22,6 +24,7 @@ if ($cgi->request_method eq 'POST') {
         print encode_json({ message => "Hello, world!" });
 }
 
+  
   
 
 # use DBI;
@@ -51,6 +54,8 @@ if ($cgi->request_method eq 'POST') {
 # use JSON;
 # use strict;
 # use warnings;
+
+
 
 
 
