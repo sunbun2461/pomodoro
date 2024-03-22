@@ -17,40 +17,45 @@
 
 <body>
     <main class="clock-container">
-        <section class="clock">
-            <h1 class="clock__heading">Pomodoro Clock</h1>
-            <img src="assets/img/tomato.png" alt="Tomato Clock" class="clock__img">
-            <div class="tasks">
-                <div class="task-item">
-                    <!-- <span class="task-heading">Task:</span> -->
-                    <input type="text" class="task-input" id="taskName" placeholder="Enter Task Name">
-                </div>
-                <div class="buttons">
-                    <button class="button__start" id="startButton">START</button>
-                    <button class="button__reset" id="resetButton">RESET</button>
-                    <button class="button__pause" id="pauseButton"><span class="pause-symbol">||</span><span class="play-symbol">&#9654;</span></button>
-                </div>
-            </div>
-            <div id="timerDisplay">25:00</div>
-            <div class="task-display__wrap">
-                <h2>Task List</h2>
-                <!-- I need to add a node here instead. or whatever that is, ill have to look it up -->
-                <ul>
-                    <li data-id="1"></li>
-                </ul>
-            </div>
-            <div class="break-modal__wrap" id="breakPopup">
-                <div class="break-modal__inner">
-                    <div class="break-modal__short" id="breakModalShort">
-                        <p><span><em>Take a break?</em></span><br><br><small>Give me a break.<br> Break me off a peice of that</small><br><br> <strong>KitKat BAR!</strong></p>
-                        <button class="break-modal__button" id="takeBreak">Take a Break</button>
+        <section class="clock-wrap clock-split">
+            <section class="clock-split_left dashboard">
+                dashboard yo.
+            </section>
+            <section class="clock-split__right clock">
+                <h1 class="clock__heading">Pomodoro Clock</h1>
+                <img src="assets/img/tomato.png" alt="Tomato Clock" class="clock__img">
+                <div class="tasks">
+                    <div class="task-item">
+                        <!-- <span class="task-heading">Task:</span> -->
+                        <input type="text" class="task-input" id="taskName" placeholder="Enter Task Name">
                     </div>
-                    <div class="break-modal__long" id="breakModalLong">
-                        <p><span><em>You must REALLY need to Take a break!</em></span><br><br><small>Give me a break.<br> Break me off a peice of that</small><br><br> <strong>KitKat BAR!</strong></p>
-                        <button class="break-modal__button" id="takeLongBreak">Take a Long Break</button>
+                    <div class="buttons">
+                        <button class="button__start" id="startButton">START</button>
+                        <button class="button__reset" id="resetButton">RESET</button>
+                        <button class="button__pause" id="pauseButton"><span class="pause-symbol">||</span><span class="play-symbol">&#9654;</span></button>
                     </div>
                 </div>
-            </div>
+                <div id="timerDisplay">25:00</div>
+                <div class="task-display__wrap">
+                    <h2>Task List</h2>
+                    <!-- I need to add a node here instead. or whatever that is, ill have to look it up -->
+                    <ul>
+                        <li data-id="1"></li>
+                    </ul>
+                </div>
+                <div class="break-modal__wrap" id="breakPopup">
+                    <div class="break-modal__inner">
+                        <div class="break-modal__short" id="breakModalShort">
+                            <p><span><em>Take a break?</em></span><br><br><small>Give me a break.<br> Break me off a peice of that</small><br><br> <strong>KitKat BAR!</strong></p>
+                            <button class="break-modal__button" id="takeBreak">Take a Break</button>
+                        </div>
+                        <div class="break-modal__long" id="breakModalLong">
+                            <p><span><em>You must REALLY need to Take a break!</em></span><br><br><small>Give me a break.<br> Break me off a peice of that</small><br><br> <strong>KitKat BAR!</strong></p>
+                            <button class="break-modal__button" id="takeLongBreak">Take a Long Break</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </section>
     </main>
 </body>
