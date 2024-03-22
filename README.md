@@ -74,4 +74,6 @@ export NVM_DIR="$HOME/.nvm"
 
 ### Testing the Fetch Apis and pm/pl modules/scripts
 
-curl -X POST -H "Content-Type: application/json" -d '{"description":"Sample task", "start_time":"2022-01-01T00:00:00.000Z"}' https://www.immaturegenius.com/pomodoro/scripts/perl/main.pl
+curl -X POST -H "Content-Type: application/json" -d '{"description":"Sample task", "start_time":"2022-01-01T00:00:00.000Z"}' https://www.immaturegenius.com/pomodoro/scripts/perl/insert_task.pl
+
+curl -X POST -H "Content-Type: application/json" -d '{"username": "thomas", "password": "password"}' https://www.immaturegenius.com/pomodoro/scripts/perl/signup.pl
