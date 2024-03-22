@@ -1,31 +1,31 @@
-#!/usr/bin/perl
-use CGI;
-use JSON;
+#!/usr/bin/perl -w
 use strict;
 use warnings;
 use lib '.';
+use CGI;
+use JSON;
 use db;
+use auth;
 
 my $cgi = CGI->new;
-print $cgi->header('application/json');
 
-if ($cgi->request_method eq 'POST') {
-    my $json_text = $cgi->param('POSTDATA');
-    my $data = decode_json($json_text); # decode the JSON string
-    my $username = $data->{'username'}; # get the username from the JSON
-    my $password = $data->{'password'}; # get the password from the JSON
 
-    if (auth::check__password($username, $password)){
-        print encode_json({ message => "Login successful."});
-    } else {
-        print encode_json({ message => "Invalid username or password."});
-    }
+
+my $json_text = $cgi->param('POSTDATA');
+my $json = JSON->new;
+my $data = $json->decode($json_text); # decode the JSON string
+my $username = $data->{'username'}; # get the username from the JSON
+my $password = $data->{'password'}; # get the password from the JSON
+
+if (auth::check_password($username, $password)){
+    print $cgi->header('application/json');
+    print encode_json({ message => "Login successful."});
 } else {
-        print encode_json({ message => "Hello, world!" });
+    print $cgi->header('application/json');
+    print encode_json({ message => "Invalid username or password."});
 }
 
-  
-  
+
 
 # use DBI;
 

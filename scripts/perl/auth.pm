@@ -11,3 +11,5 @@ sub check_password {
     my $stored_hash = db::get_password_hash($username); # get the stored hash from the database
     return $hashed_password eq $stored_hash;
 }
+
+1;

@@ -1,9 +1,9 @@
 #!/usr/bin/perl
-use CGI;
-use JSON;
 use strict;
 use warnings;
 use lib '.';
+use CGI;
+use JSON;
 use db;
 
 my $cgi = CGI->new;

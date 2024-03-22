@@ -16,12 +16,14 @@ use Digest::SHA qw(sha256_hex);
 
 sub create_user {
     my ($username, $password) = @_;
+    die "Username is not defined" unless defined $username;
+    die "Password is not defined" unless defined $password;
     my $hashed_password = sha256_hex($password);
     my $dsn = "dbi:SQLite:dbname=../../db/pomodoro.db";
     my $dbh = DBI->connect($dsn) or die $DBI::errstr;
     my $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
     my $sth = $dbh->prepare($sql) or die $DBI::errstr;
-    $sth->execute($username, $hashed_password);
+    $sth->execute($username, $hashed_password) or die $DBI::errstr;
     return "User created: $username";
 }
 1;

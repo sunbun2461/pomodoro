@@ -25,5 +25,4 @@ sub insert_task {
 };
 
 1;
-
-# curl -X POST -H "Content-Type: application/json" -d '{"description":"Sample task", "start_time":"2022-01-01T00:00:00.000Z"}' https://www.immaturegenius.com/pomodoro/scripts/perl/.pl
+ 
