@@ -245,7 +245,8 @@ function login(username, password) {
     return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/login.pl', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ username, password }),
+            credentials: 'include' // this is needed to send cookies
         })
         .then(response => response.json())
         .catch(error => console.error('Error:', error));

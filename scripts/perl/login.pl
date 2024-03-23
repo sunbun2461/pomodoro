@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use lib '.';
 use CGI;
+use CGI::Session;
 use JSON;
 use db;
 use auth;
