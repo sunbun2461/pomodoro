@@ -53,6 +53,7 @@ const breakModalLong = document.querySelector("#breakModalLong");
 let taskDisplayElement = document.querySelector(
     `.task-display__wrap li[data-id="1"]`
 );
+const submitButton = document.querySelector("#submit");
 const doc = document;
 const body = document.querySelector("body");
 let endInterval;
@@ -227,6 +228,14 @@ addClickListener(takeLongBreak, function() {
 
 addClickListener(doc, function() {
     console.log(JSON.stringify(pomodoroState, null, 2));
+});
+
+
+addClickListener(submitButton, function(event) {
+    event.preventDefault();
+    const userName = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    login(userName, password);
 });
 
 /* perl api */

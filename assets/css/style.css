@@ -1,172 +1,264 @@
 * {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    box-sizing: border-box;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* mixins */
+/* colors */
+html,
+body {
+  height: 100%;
+}
+
+/* fonts */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #233138;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #233138;
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #233138;
+}
+
+h4 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #233138;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #233138;
 }
 
 body.hidden {
-    overflow: hidden;
+  overflow: hidden;
 }
 
-section.clock {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    .clock__heading {
-        margin-bottom: 0;
-        color: #233138;
-        font-size: 3rem;
-        text-align: center;
-    }
-    img.clock__img {
-        max-width: 20rem;
-        margin-bottom: 2rem;
-    }
-    .tasks {
-        .task-item {
-            display: flex;
-            justify-self: center;
-            align-items: center;
-            margin: 0rem auto 2rem;
-            span.task-heading {
-                border-bottom: 2px solid grey;
-                color: grey;
-            }
-            input {
-                width: 20rem;
-                margin-left: 1rem;
-                padding: .5rem;
-                border: 1px solid lightgray;
-                border-radius: 5px;
-            }
-        }
-        div.buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            button {
-                padding: 1rem 2.5rem;
-                background: #F44336;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-            .button__start {
-                background-color: #38bd38;
-                transition: 75ms;
-            }
-            .button__start:hover {
-                outline: 2px solid #38bd38ad;
-                outline-offset: 2px;
-            }
-            .button__start.grey-out {
-                opacity: .3;
-                cursor: not-allowed;
-                pointer-events: none;
-            }
-            .button__pause {
-                display: none;
-                color: black;
-                background: #ffc107;
-                span.pause-symbol {
-                    display: inline;
-                }
-                span.play-symbol {
-                    display: none;
-                }
-            }
-            .button__pause:hover {
-                outline: 2px solid #ffc107ad;
-                outline-offset: 2px;
-            }
-            .button__pause.show {
-                display: block;
-            }
-            .button__pause.paused {
-                span.pause-symbol {
-                    display: none;
-                }
-                span.play-symbol {
-                    display: inline;
-                }
-            }
-        }
-        .button__reset {
-            background: #F44336;
-        }
-        .button__reset:hover {
-            outline: 2px solid #F44336ad;
-            outline-offset: 2px;
-        }
-    }
-    .task-display__wrap {
-        margin-top: 2rem;
-        ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-    }
+.module {
+  width: fit-content;
+  margin-bottom: 2rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(110, 117, 120, 0.3529411765);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.043);
+  border-radius: 5px;
+}
+
+main.clock-container {
+  height: 100%;
+}
+main.clock-container section.clock-split {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+@media screen and (min-width: 768px) {
+  main.clock-container section.clock-split {
+    flex-direction: row;
+  }
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 1rem;
+}
+@media screen and (min-width: 768px) {
+  main.clock-container section.clock-split section.clock-split__left.dashboard {
+    flex-basis: 30%;
+    border-right: 3px solid rgba(128, 128, 128, 0.148);
+  }
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard div.login input {
+  margin: 0.25rem;
+  padding: 0.5rem;
+  font-size: 1.25rem;
+  border: 1px solid rgba(110, 117, 120, 0.3529411765);
+  border-radius: 5px;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard div.login input.login__submit {
+  display: block;
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  background: #38bd38;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+main.clock-container section.clock-split section.clock-split__right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+@media screen and (min-width: 768px) {
+  main.clock-container section.clock-split section.clock-split__right {
+    flex-basis: 70%;
+  }
+}
+main.clock-container section.clock-split section.clock-split__right .clock__heading {
+  margin-bottom: 0;
+  color: #233138;
+  font-size: 3rem;
+  text-align: center;
+}
+main.clock-container section.clock-split section.clock-split__right img.clock__img {
+  max-width: 20rem;
+  margin-bottom: 2rem;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks .task-item {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  margin: 0rem auto 2rem;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks .task-item span.task-heading {
+  border-bottom: 2px solid grey;
+  color: grey;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks .task-item input {
+  width: 20rem;
+  margin-left: 1rem;
+  padding: 0.5rem;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons button {
+  padding: 1rem 2.5rem;
+  background: #F44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__start {
+  background-color: #38bd38;
+  transition: 75ms;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__start:hover {
+  outline: 2px solid rgba(56, 189, 56, 0.6784313725);
+  outline-offset: 2px;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__start.grey-out {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__pause {
+  display: none;
+  color: black;
+  background: #ffc107;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__pause span.pause-symbol {
+  display: inline;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__pause span.play-symbol {
+  display: none;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__pause:hover {
+  outline: 2px solid rgba(255, 193, 7, 0.6784313725);
+  outline-offset: 2px;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__pause.show {
+  display: block;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__pause.paused span.pause-symbol {
+  display: none;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__pause.paused span.play-symbol {
+  display: inline;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks .button__reset {
+  background: #F44336;
+}
+main.clock-container section.clock-split section.clock-split__right .tasks .button__reset:hover {
+  outline: 2px solid rgba(244, 67, 54, 0.6784313725);
+  outline-offset: 2px;
+}
+main.clock-container section.clock-split section.clock-split__right .task-display__wrap {
+  margin-top: 2rem;
+}
+main.clock-container section.clock-split section.clock-split__right .task-display__wrap ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .break-modal__wrap {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    display: none;
-    .break-modal__button {
-        padding: 1rem 2.5rem;
-        background-color: #38bd38;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    .break-modal__button:hover {
-        outline: 2px solid #38bd38ad;
-        outline-offset: 2px;
-    }
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: none;
 }
-
+.break-modal__wrap .break-modal__button {
+  padding: 1rem 2.5rem;
+  background-color: #38bd38;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.break-modal__wrap .break-modal__button:hover {
+  outline: 2px solid rgba(56, 189, 56, 0.6784313725);
+  outline-offset: 2px;
+}
 .break-modal__wrap.show {
-    display: flex;
+  display: flex;
+}
+.break-modal__wrap .break-modal__inner {
+  display: flex;
+  flex-direction: column;
+  width: min-content;
+  min-width: 300px;
+  max-width: 1401px;
+  padding: 1rem 2rem;
+  background-color: white;
+  border-radius: 0.625rem;
+  box-shadow: rgba(252, 30, 30, 0.16) 0px 8px 24px;
+  text-align: center;
+}
+.break-modal__wrap .break-modal__inner .break-modal__short {
+  display: block;
+}
+.break-modal__wrap .break-modal__inner .break-modal__short.hide {
+  display: none;
+}
+.break-modal__wrap .break-modal__inner .break-modal__long {
+  display: none;
+  background-color: rgba(255, 255, 0, 0.54);
+}
+.break-modal__wrap .break-modal__inner .break-modal__long.show {
+  display: block;
 }
 
-.break-modal__inner {
-    display: flex;
-    flex-direction: column;
-    width: min-content;
-    min-width: 300px;
-    max-width: 1400px;
-    padding: 1rem 2rem;
-    background-color: white;
-    border-radius: .625rem;
-    box-shadow: rgb(252 30 30 / 16%) 0px 8px 24px;
-    text-align: center;
-    .break-modal__short {
-        display: block;
-    }
-    .break-modal__short.hide {
-        display: none;
-    }
-    .break-modal__long {
-        display: none;
-        background-color: rgba(255, 255, 0, 0.54);
-    }
-    .break-modal__long.show {
-        display: block;
-    }
-}
+/*# sourceMappingURL=style.css.map */

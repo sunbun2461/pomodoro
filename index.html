@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
@@ -18,8 +20,16 @@
 <body>
     <main class="clock-container">
         <section class="clock-wrap clock-split">
-            <section class="clock-split_left dashboard">
-                dashboard yo.
+            <section class="clock-split__left dashboard">
+                <h1 class="module">dashboard yo.</h1>
+                <div class="login">
+                    <h4 class="login__heading">Login Here to see your past data and more.</h4>
+                    <form id="loginForm">
+                        <input type="text" id="username" placeholder="Username" class="login__input">
+                        <input type="password" id="password" placeholder="Password" class="login__input">
+                        <input type="submit" id="submit" value="Login" class="login__submit">
+                    </form>
+                </div>
             </section>
             <section class="clock-split__right clock">
                 <h1 class="clock__heading">Pomodoro Clock</h1>
