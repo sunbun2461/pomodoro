@@ -9,9 +9,6 @@ use db;
 use auth;
 
 my $cgi = CGI->new;
-
-
-
 my $json_text = $cgi->param('POSTDATA');
 my $json = JSON->new;
 my $data = $json->decode($json_text); # decode the JSON string
@@ -19,8 +16,11 @@ my $username = $data->{'username'}; # get the username from the JSON
 my $password = $data->{'password'}; # get the password from the JSON
 
 if (auth::check_password($username, $password)){
+    my $session = CGI::Session("driver:File", undef, }{Directory => '/tmp'});
+    $session->param('username', $username);
     print $cgi->header(-type => 'application/json', -Access_Control_Allow_Origin => '*');
     print encode_json({ message => "Login successful."});
+    print "{ \"message\": \"Hello, world! Yo Yo Yo\" }";
 } else {
     print $cgi->header(-type => 'application/json', -Access_Control_Allow_Origin => '*');
     print encode_json({ message => "Invalid username or password."});
