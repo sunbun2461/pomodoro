@@ -16,7 +16,7 @@ my $username = $data->{'username'}; # get the username from the JSON
 my $password = $data->{'password'}; # get the password from the JSON
 
 if (auth::check_password($username, $password)){
-    my $session = CGI::Session("driver:File", undef, }{Directory => '/tmp'});
+    my $session = CGI::Session("driver:File", undef, {Directory => '/tmp'});
     $session->param('username', $username);
     print $cgi->header(-type => 'application/json', -Access_Control_Allow_Origin => '*');
     print encode_json({ message => "Login successful."});
