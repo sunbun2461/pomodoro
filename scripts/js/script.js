@@ -31,6 +31,11 @@ const pomodoroState = {
         shortBreakDuration: 4 /* 5 * 60 */ , // 5 minutes in seconds
         longBreakDuration: 4 /* 15 * 60 */ , // 15 minutes in seconds
     },
+    userInfo: {
+        username: "",
+        password: "",
+        isLoggedIn: false,
+    },
 };
 
 //set here because cant use currentCountTime before its initialized which I was tyring to do
@@ -56,6 +61,8 @@ let taskDisplayElement = document.querySelector(
 const submitButton = document.querySelector("#submit");
 const doc = document;
 const body = document.querySelector("body");
+const loginWrap = document.querySelector("#loginWrap");
+
 let endInterval;
 const onTimerEnd = () => {};
 
@@ -64,7 +71,7 @@ const onTimerEnd = () => {};
 // functions
 
 function updateUI() {
-    const { timer, sessions } = pomodoroState;
+    const { timer, sessions, userInfo } = pomodoroState;
     if (pomodoroState.timer.isActive) {
         // update to reference pomodoroState.timer.isActive
         pauseButton.classList.add("show");
@@ -79,6 +86,9 @@ function updateUI() {
     } else {
         breakModalWrap.classList.remove("show");
         body.classList.remove("hidden");
+    }
+    if (userInfo.isLoggedIn) {
+        loginWrap.remove();
     }
 }
 
@@ -241,6 +251,7 @@ addClickListener(submitButton, function(event) {
 /* perl api */
 
 
+
 function login(username, password) {
     return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/login.pl', {
             method: 'POST',
@@ -279,6 +290,24 @@ fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/api.pl')
     .then(response => response.json())
     .then(data => console.log(data))
     .catch(error => console.error('Error:', error))
+
+fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/is_logged_in.pl', {
+        method: 'GET',
+        credentials: 'include' // this is needed to send cookies
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.isLoggedIn) {
+            console.log('User is logged in');
+            const { userInfo } = pomodoroState;
+            userInfo.isLoggedIn = true;
+            updateUI();
+        } else {
+            console.log('User is not logged in');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+
 
 
 // # how to show tree two levels down with cli tree command. # tree -L 2
