@@ -9,21 +9,33 @@ use db;
 use auth;
 
 my $cgi = CGI->new;
-my $json_text = $cgi->param('POSTDATA');
-my $json = JSON->new;
-my $data = $json->decode($json_text); # decode the JSON string
-my $username = $data->{'username'}; # get the username from the JSON
-my $password = $data->{'password'}; # get the password from the JSON
+my $session = CGI::Session->load() or die CGI::Session->errstr;
 
-if (auth::check_password($username, $password)){
-    my $session = CGI::Session("driver:File", undef, {Directory => '/tmp'});
-    $session->param('username', $username);
+if($session->is_expired){
     print $cgi->header(-type => 'application/json', -Access_Control_Allow_Origin => '*');
-    print encode_json({ message => "Login successful."});
-    print "{ \"message\": \"Hello, world! Yo Yo Yo\" }";
+    print encode_json({ message => "Session expired."});
+} elsif($session->is_empty){
+    my $json_text = $cgi->param('POSTDATA');
+    my $json = JSON->new;
+    my $data = $json->decode($json_text); # decode the JSON string
+    my $username = $data->{'username'}; # get the username from the JSON
+    my $password = $data->{'password'}; # get the password from the JSON
+
+    if (auth::check_password($username, $password)){
+        my $session = new CGI::Session("driver:File", undef, {Directory => '/tmp'});
+        $session->param('username', $username);
+        my $cookie = $cgi->cookie(CGISESSID => $session->id);
+        print $cgi->header(-type => 'application/json', -Access_Control_Allow_Origin => '*', -cookie => $cookie);
+        print encode_json({ message => "Login successful."});
+        print "{ \"message\": \"Hello, world! $username\" }";
+    } else {
+        print $cgi->header(-type => 'application/json', -Access_Control_Allow_Origin => '*');
+        print encode_json({ message => "Invalid username or password."});
+    }
 } else {
+    my $username = $session->param('username');
     print $cgi->header(-type => 'application/json', -Access_Control_Allow_Origin => '*');
-    print encode_json({ message => "Invalid username or password."});
+    print encode_json({ message => "Hello, $username" });
 }
 
 
