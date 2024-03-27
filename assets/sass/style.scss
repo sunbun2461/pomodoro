@@ -1,9 +1,18 @@
 * {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     box-sizing: border-box;
+    font-weight: 100;
     margin: 0;
 }
 
+
+/* colors */
+
+$grey: #6e75785a;
+$deep: #080303;
+$light: #f2f2f2;
+$accent: #d96a4c;
+$accent_green:#7bb58a;
 
 /* mixins */
 
@@ -21,22 +30,51 @@
     width: fit-content;
     margin-bottom: 2rem;
     padding: .75rem;
-    border: 1px solid $grey;
+    // border: 1px solid $grey;
+    // background-color: #d96a4c;
+    background-color: white;
+    color: $deep;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.043);
     @include border_radius();
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: $deep;
+        @include roboto_thin;
+    }
 }
 
-
-/* colors */
-
-$grey: #6e75785a;
 html,
 body {
     height: 100%;
+    background-color: $light;
 }
 
 
 /* fonts */
+
+.roboto-thin {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
+@mixin roboto_thin {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
+@mixin accent {
+    color: $accent;
+}
+
+.accent {
+    @include accent();
+}
 
 h1 {
     font-size: 2rem;
@@ -68,6 +106,17 @@ p {
     color: #233138;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div {
+    color: $deep;
+}
+
 body.hidden {
     overflow: hidden;
 }
@@ -91,11 +140,23 @@ main.clock-container {
             justify-content: start;
             align-items: start;
             padding: 1rem;
+            // background-color: #a22d2b0f;
             @include min(768px) {
                 flex-basis: 30%;
-                border-right: 3px solid rgba(128, 128, 128, 0.148);
+                border-right: 3px solid rgba(128, 128, 128, 0.04)
             }
             div.login {
+                display: grid;
+                grid-template-rows: 0fr;
+                opacity: 0;
+                transition: grid-template-rows .5s, opacity .5s;
+                &.show {
+                    grid-template-rows: 1fr;
+                    opacity: 1;
+                }
+                div.login-inner {
+                    overflow: hidden;
+                }
                 input {
                     margin: .25rem;
                     padding: .5rem;
@@ -106,11 +167,26 @@ main.clock-container {
                         display: block;
                         width: fit-content;
                         padding: .5rem 1rem;
-                        background: #38bd38;
-                        color: white;
-                        border: none;
+                        background: white;
+                        // color:$accent;
+                        color: $accent_green;
                         cursor: pointer;
+                        border-radius: 5px;
+                        border: $accent_green 1px solid;
                         @include border_radius();
+                    }
+                    &::placeholder {
+                        color: #ccc;
+                    }
+                }
+            }
+            .task-display__wrap {
+                ul {
+                    list-style: none;
+                    margin: 0;
+                    padding: 0 0 0 .5rem;
+                    li {
+                        font-size: .75rem;
                     }
                 }
             }
@@ -126,7 +202,6 @@ main.clock-container {
             height: 100%;
             .clock__heading {
                 margin-bottom: 0;
-                color: #233138;
                 font-size: 3rem;
                 text-align: center;
             }
@@ -167,7 +242,7 @@ main.clock-container {
                         cursor: pointer;
                     }
                     .button__start {
-                        background-color: #38bd38;
+                        background-color: $accent_green;
                         transition: 75ms;
                     }
                     .button__start:hover {
@@ -212,14 +287,6 @@ main.clock-container {
                 .button__reset:hover {
                     outline: 2px solid #F44336ad;
                     outline-offset: 2px;
-                }
-            }
-            .task-display__wrap {
-                margin-top: 2rem;
-                ul {
-                    list-style: none;
-                    margin: 0;
-                    padding: 0;
                 }
             }
         }

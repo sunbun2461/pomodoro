@@ -87,8 +87,8 @@ function updateUI() {
         breakModalWrap.classList.remove("show");
         body.classList.remove("hidden");
     }
-    if (userInfo.isLoggedIn) {
-        loginWrap.remove();
+    if (userInfo.isLoggedIn === false) {
+        loginWrap.classList.add('show', 'module');
     }
 }
 
@@ -306,13 +306,15 @@ fetch('http://208.113.200.163/pomodoro/scripts/perl/is_logged_in.pl', {
     })
     .then(response => response.json())
     .then(data => {
+        const { userInfo } = pomodoroState;
         if (data.isLoggedIn) {
             console.log('User is logged in');
-            const { userInfo } = pomodoroState;
             userInfo.isLoggedIn = true;
             updateUI();
         } else {
             console.log('User is not logged in');
+            userInfo.isLoggedIn = false;
+            updateUI();
         }
     })
     .catch(error => console.error('Error:', error));

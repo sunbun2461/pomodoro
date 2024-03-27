@@ -15,24 +15,42 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon_io/favicon-16x16.png">
     <link rel="manifest" href="assets/images/favicon_io/site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <main class="clock-container">
         <section class="clock-wrap clock-split">
             <section class="clock-split__left dashboard">
-                <h1 class="module">dashboard yo.</h1>
+                <h1 class="module">dashboard <span class="accent">yo</span></h1>
                 <div class="login" id="loginWrap">
-                    <h4 class="login__heading">Login Here to see your past data and more.</h4>
-                    <form id="loginForm">
-                        <input type="text" id="username" placeholder="Username" class="login__input">
-                        <input type="password" id="password" placeholder="Password" class="login__input">
-                        <input type="submit" id="submit" value="Login" class="login__submit">
-                    </form>
+                    <div class="login-inner">
+                        <h4 class="login__heading">Login here to see your past data and more.</h4>
+                        <form id="loginForm">
+                            <input type="text" id="username" placeholder="Username" class="login__input">
+                            <input type="password" id="password" placeholder="Password" class="login__input">
+                            <input type="submit" id="submit" value="Login" class="login__submit">
+                        </form>
+                    </div>
+                </div>
+                <div class="task-display__wrap">
+                    <h2>Task <span class="accent">List</span></h2>
+                    <!-- I need to add a node here instead. or whatever that is, ill have to look it up -->
+                    <div class="module">
+                        Current Tasks
+                        <ul>
+                            <li data-id="1"></li>
+                        </ul>
+                    </div>
+                    <div class="module">
+                        Old Tasks
+                    </div>
                 </div>
             </section>
             <section class="clock-split__right clock">
-                <h1 class="clock__heading">Pomodoro Clock</h1>
+                <h1 class="clock__heading">Pomodoro <span class="accent">Clock</span></h1>
                 <img src="assets/img/tomato.png" alt="Tomato Clock" class="clock__img">
                 <div class="tasks">
                     <div class="task-item">
@@ -46,13 +64,7 @@
                     </div>
                 </div>
                 <div id="timerDisplay">25:00</div>
-                <div class="task-display__wrap">
-                    <h2>Task List</h2>
-                    <!-- I need to add a node here instead. or whatever that is, ill have to look it up -->
-                    <ul>
-                        <li data-id="1"></li>
-                    </ul>
-                </div>
+
                 <div class="break-modal__wrap" id="breakPopup">
                     <div class="break-modal__inner">
                         <div class="break-modal__short" id="breakModalShort">

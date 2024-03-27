@@ -1,17 +1,29 @@
 * {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   box-sizing: border-box;
+  font-weight: 100;
   margin: 0;
 }
 
-/* mixins */
 /* colors */
+/* mixins */
 html,
 body {
   height: 100%;
+  background-color: #f2f2f2;
 }
 
 /* fonts */
+.roboto-thin {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.accent {
+  color: #d96a4c;
+}
+
 h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -42,6 +54,17 @@ p {
   color: #233138;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div {
+  color: #080303;
+}
+
 body.hidden {
   overflow: hidden;
 }
@@ -50,9 +73,21 @@ body.hidden {
   width: fit-content;
   margin-bottom: 2rem;
   padding: 0.75rem;
-  border: 1px solid rgba(110, 117, 120, 0.3529411765);
+  background-color: white;
+  color: #080303;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.043);
   border-radius: 5px;
+}
+.module h1,
+.module h2,
+.module h3,
+.module h4,
+.module h5,
+.module h6 {
+  color: #080303;
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: normal;
 }
 
 main.clock-container {
@@ -78,8 +113,21 @@ main.clock-container section.clock-split section.clock-split__left.dashboard {
 @media screen and (min-width: 768px) {
   main.clock-container section.clock-split section.clock-split__left.dashboard {
     flex-basis: 30%;
-    border-right: 3px solid rgba(128, 128, 128, 0.148);
+    border-right: 3px solid rgba(128, 128, 128, 0.04);
   }
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard div.login {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.5s, opacity 0.5s;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard div.login.show {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard div.login div.login-inner {
+  overflow: hidden;
 }
 main.clock-container section.clock-split section.clock-split__left.dashboard div.login input {
   margin: 0.25rem;
@@ -92,11 +140,23 @@ main.clock-container section.clock-split section.clock-split__left.dashboard div
   display: block;
   width: fit-content;
   padding: 0.5rem 1rem;
-  background: #38bd38;
-  color: white;
-  border: none;
+  background: white;
+  color: #7bb58a;
   cursor: pointer;
   border-radius: 5px;
+  border: #7bb58a 1px solid;
+  border-radius: 5px;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard div.login input::placeholder {
+  color: #ccc;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard .task-display__wrap ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 0.5rem;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard .task-display__wrap ul li {
+  font-size: 0.75rem;
 }
 main.clock-container section.clock-split section.clock-split__right {
   display: flex;
@@ -112,7 +172,6 @@ main.clock-container section.clock-split section.clock-split__right {
 }
 main.clock-container section.clock-split section.clock-split__right .clock__heading {
   margin-bottom: 0;
-  color: #233138;
   font-size: 3rem;
   text-align: center;
 }
@@ -153,7 +212,7 @@ main.clock-container section.clock-split section.clock-split__right .tasks div.b
   cursor: pointer;
 }
 main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__start {
-  background-color: #38bd38;
+  background-color: #7bb58a;
   transition: 75ms;
 }
 main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__start:hover {
@@ -195,14 +254,6 @@ main.clock-container section.clock-split section.clock-split__right .tasks .butt
 main.clock-container section.clock-split section.clock-split__right .tasks .button__reset:hover {
   outline: 2px solid rgba(244, 67, 54, 0.6784313725);
   outline-offset: 2px;
-}
-main.clock-container section.clock-split section.clock-split__right .task-display__wrap {
-  margin-top: 2rem;
-}
-main.clock-container section.clock-split section.clock-split__right .task-display__wrap ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
 .break-modal__wrap {
