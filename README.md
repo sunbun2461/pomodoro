@@ -78,8 +78,8 @@ curl -X POST -H "Content-Type: application/json" -d '{"description":"Sample task
 
 
 curl -X POST -H "Content-Type: application/json" -d '{"username": "thomas", "password":"test123"}' https://www.immaturegenius.com/pomodoro/scripts/perl/signup.pl
- 
 
-curl -X POST -H "Content-Type: application/json" -d '{"username":"thomas","password":"test123"}' https://www.immaturegenius.com/pomodoro/scripts/perl/login.pl
+curl -X POST -H "Content-Type: application/json" -d '{"username": "thomas", "password":"test123"}' http://208.113.200.163/pomodoro/scripts/perl/signup.pl
+ 
 
 curl -X POST -H "Content-Type: application/json" -d '{"username":"thomas","password":"password"}' https://www.immaturegenius.com/pomodoro/scripts/perl/login.pl

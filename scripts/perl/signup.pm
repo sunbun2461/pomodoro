@@ -19,7 +19,7 @@ sub create_user {
     die "Username is not defined" unless defined $username;
     die "Password is not defined" unless defined $password;
     my $hashed_password = sha256_hex($password);
-    my $dsn = "dbi:SQLite:dbname=../../db/pomodoro.db";
+    my $dsn = "dbi:SQLite:dbname=/var/www/html/pomodoro/db/pomodoro.db";
     my $dbh = DBI->connect($dsn) or die $DBI::errstr;
     my $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
     my $sth = $dbh->prepare($sql) or die $DBI::errstr;

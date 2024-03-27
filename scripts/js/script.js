@@ -93,7 +93,6 @@ function updateUI() {
 }
 
 
-
 const startTimer = (duration, type) => {
     const { sessions } = pomodoroState;
     let display = timerDisplay;
@@ -144,7 +143,6 @@ const startTimer = (duration, type) => {
 };
 
 
-
 const timerActivate = () => {
     const { timer, sessions } = pomodoroState;
     timer.isActive = true;
@@ -192,7 +190,9 @@ const breakModals = (type) => {
     updateUI();
 };
 
+const instertTask = (taskValue) => {
 
+}
 
 
 /* Event Listeners */
@@ -211,8 +211,7 @@ addClickListener(startButton, function() {
     taskDisplayElement.innerText = taskValue;
     startTimer(settings.workDuration, sessions.sessionType[0]); // start timer
     timerActivate(); // activate timer
-
-    sendDataToServer(taskValue);
+    insertTask(taskValue);
 });
 
 addClickListener(pauseButton, function() {
@@ -253,18 +252,28 @@ addClickListener(submitButton, function(event) {
 
 
 function login(username, password) {
-    return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/login.pl', {
+    return fetch('http://208.113.200.163/pomodoro/scripts/perl/login.pl', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password }),
             credentials: 'include' // this is needed to send cookies
         })
         .then(response => response.json())
+        .then(data => {
+            // store user info in state
+            console.log(data)
+            console.log(sessionStorage)
+            const { userInfo } = pomodoroState;
+            // userInfo.username = username;
+            sessionStorage.setItem('username', username); // how can i see what is in this data object? you can console.log(data)
+            userInfo.username = sessionStorage.getItem('username');
+            console.log(username);
+        })
         .catch(error => console.error('Error:', error));
 }
 
 function signUp(username, password) {
-    return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/signup.pl', {
+    return fetch('http://208.113.200.163/pomodoro/scripts/perl/signup.pl', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -274,7 +283,7 @@ function signUp(username, password) {
 }
 
 function insertTask(taskValue) {
-    return fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/insert_task.pl', {
+    return fetch('http://208.113.200.163/pomodoro/scripts/perl/insert_task.pl', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -286,12 +295,12 @@ function insertTask(taskValue) {
         .catch(error => console.error('Error:', error));
 }
 
-fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/api.pl')
+fetch('http://208.113.200.163/pomodoro/scripts/perl/api.pl')
     .then(response => response.json())
     .then(data => console.log(data))
     .catch(error => console.error('Error:', error))
 
-fetch('https://www.immaturegenius.com/pomodoro/scripts/perl/is_logged_in.pl', {
+fetch('http://208.113.200.163/pomodoro/scripts/perl/is_logged_in.pl', {
         method: 'GET',
         credentials: 'include' // this is needed to send cookies
     })
