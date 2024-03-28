@@ -60,3 +60,26 @@ In summary, integrating Perl with a web application for tasks like a Pomodoro ti
 
 
 ### Progress 
+
+
+
+
+
+## Dream host NVM
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+### Testing the Fetch Apis and pm/pl modules/scripts
+
+curl -X POST -H "Content-Type: application/json" -d '{"description":"Sample task", "start_time":"2022-01-01T00:00:00.000Z"}' https://www.immaturegenius.com/pomodoro/scripts/perl/insert_task.pl
+
+
+curl -X POST -H "Content-Type: application/json" -d '{"username": "thomas", "password":"test123"}' https://www.immaturegenius.com/pomodoro/scripts/perl/signup.pl
+
+curl -X POST -H "Content-Type: application/json" -d '{"username": "thomas", "password":"test123"}' http://208.113.200.163/pomodoro/scripts/perl/signup.pl
+ 
+
+curl -X POST -H "Content-Type: application/json" -d '{"username":"thomas","password":"password"}' https://www.immaturegenius.com/pomodoro/scripts/perl/login.pl

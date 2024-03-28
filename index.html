@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
@@ -9,31 +11,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/style.css">
     <title>Pomodoro</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/favicon_io/site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <main class="clock-container">
-        <section class="clock">
-            <h1 class="clock__heading">Pomodoro Clock</h1>
-            <img src="assets/img/tomato.png" alt="Tomato Clock" class="clock__img">
-            <div class="tasks">
-                <div class="task-item">
-                    <!-- <span class="task-heading">Task:</span> -->
-                    <input type="text" class="task-input" id="taskName" placeholder="Enter Task Name">
+        <section class="clock-wrap clock-split">
+            <section class="clock-split__left dashboard">
+                <h1 class="module">dashboard <span class="accent">yo</span></h1>
+                <div class="login" id="loginWrap">
+                    <div class="login-inner">
+                        <h4 class="login__heading">Login here to see your past data and more.</h4>
+                        <form id="loginForm">
+                            <input type="text" id="username" placeholder="Username" class="login__input">
+                            <input type="password" id="password" placeholder="Password" class="login__input">
+                            <input type="submit" id="submit" value="Login" class="login__submit">
+                        </form>
+                    </div>
                 </div>
-                <div class="buttons">
-                    <button class="button__start" id="startButton">START</button>
-                    <button class="button__reset" id="resetButton">RESET</button>
-                    <button class="button__pause" id="pauseButton"><span class="pause-symbol">||</span><span class="play-symbol">&#9654;</span></button>
+                <div class="task-display__wrap">
+                    <h2>Task <span class="accent">List</span></h2>
+                    <!-- I need to add a node here instead. or whatever that is, ill have to look it up -->
+                    <div class="module">
+                        Current Tasks
+                        <ul>
+                            <li data-id="1"></li>
+                        </ul>
+                    </div>
+                    <div class="module">
+                        Old Tasks
+                    </div>
+                </div>
+            </section>
+            <section class="clock-split__right clock">
+                <h1 class="clock__heading">Pomodoro <span class="accent">Clock</span></h1>
+                <img src="assets/img/tomato.png" alt="Tomato Clock" class="clock__img">
+                <div class="tasks">
+                    <div class="task-item">
+                        <!-- <span class="task-heading">Task:</span> -->
+                        <input type="text" class="task-input" id="taskName" placeholder="Enter Task Name">
+                    </div>
+                    <div class="buttons">
+                        <button class="button__start" id="startButton">START</button>
+                        <button class="button__reset" id="resetButton">RESET</button>
+                        <button class="button__pause" id="pauseButton"><span class="pause-symbol">||</span><span class="play-symbol">&#9654;</span></button>
+                    </div>
+                </div>
+                <div id="timerDisplay">25:00</div>
 
+                <div class="break-modal__wrap" id="breakPopup">
+                    <div class="break-modal__inner">
+                        <div class="break-modal__short" id="breakModalShort">
+                            <p><span><em>Take a break?</em></span><br><br><small>Give me a break.<br> Break me off a peice of that</small><br><br> <strong>KitKat BAR!</strong></p>
+                            <button class="break-modal__button" id="takeBreak">Take a Break</button>
+                        </div>
+                        <div class="break-modal__long" id="breakModalLong">
+                            <p><span><em>You must REALLY need to Take a break!</em></span><br><br><small>Give me a break.<br> Break me off a peice of that</small><br><br> <strong>KitKat BAR!</strong></p>
+                            <button class="break-modal__button" id="takeLongBreak">Take a Long Break</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div id="timerDisplay">25:00</span>
-            </div>
-            <div class="break-modal" id="breakPopup">
-                <p>Take a break? I mean Give me a break. Give me a break. Break me off a peice of that KitKat BAR!</p>
-                <button id="takeBreak">Take a Break</button>
-            </div>
+            </section>
         </section>
     </main>
 </body>

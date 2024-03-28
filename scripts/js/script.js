@@ -7,22 +7,34 @@ const pomodoroState = {
         currentSeconds: 0,
     },
     sessions: {
-        sessionType: "work",
+        sessionType: ["work", "shortBreak", "longBreak"],
+        sessionTypeActive: "work",
         sessionDescription: "", // user input
-        completedWorkSessionsCount: 0,
         currentSession: 0,
+        completedWorkSessionsCount: 0,
+        completedShortBreak: 0,
+        completedLongBreak: 0,
+        totalCompletedSessions: 0,
+        nextSessionAttempt: 0,
         work: {
             completedWorkSessionsCount: 0,
-            targetWorkSessionsBeforeLongBreak: 4,
         },
         breaks: {
             completedBreakSessionsCount: 0,
+            targetWorkSessionsBeforeShortBreak: 1,
+            targetShortBreaksBeforeLongBreak: 2,
+            breakModal: false,
         },
     },
     settings: {
-        workDuration: 25 * 60, // 25 minutes in seconds
-        shortBreakDuration: 5 * 60, // 5 minutes in seconds
-        longBreakDuration: 15 * 60, // 15 minutes in seconds
+        workDuration: 4 /* 25 * 60 */ , // 25 minutes in seconds
+        shortBreakDuration: 4 /* 5 * 60 */ , // 5 minutes in seconds
+        longBreakDuration: 4 /* 15 * 60 */ , // 15 minutes in seconds
+    },
+    userInfo: {
+        username: "",
+        password: "",
+        isLoggedIn: false,
     },
 };
 
@@ -37,13 +49,29 @@ const timerDisplay = document.querySelector("#timerDisplay");
 const startButton = document.querySelector("#startButton");
 const pauseButton = document.querySelector("#pauseButton");
 const resetButton = document.querySelector("#resetButton");
+const breakModalWrap = document.querySelector(".break-modal__wrap");
 const takeBreak = document.querySelector("#takeBreak");
+const takeLongBreak = document.querySelector("#takeLongBreak");
+const taskName = document.querySelector("#taskName");
+const breakModalShort = document.querySelector("#breakModalShort");
+const breakModalLong = document.querySelector("#breakModalLong");
+let taskDisplayElement = document.querySelector(
+    `.task-display__wrap li[data-id="1"]`
+);
+const submitButton = document.querySelector("#submit");
 const doc = document;
+const body = document.querySelector("body");
+const loginWrap = document.querySelector("#loginWrap");
+
 let endInterval;
+const onTimerEnd = () => {};
+
+
 
 // functions
 
 function updateUI() {
+    const { timer, sessions, userInfo } = pomodoroState;
     if (pomodoroState.timer.isActive) {
         // update to reference pomodoroState.timer.isActive
         pauseButton.classList.add("show");
@@ -52,7 +80,68 @@ function updateUI() {
         pauseButton.classList.remove("show");
         startButton.classList.remove("grey-out");
     }
+    if (sessions.breaks.breakModal) {
+        breakModalWrap.classList.add("show");
+        body.classList.add("hidden");
+    } else {
+        breakModalWrap.classList.remove("show");
+        body.classList.remove("hidden");
+    }
+    if (userInfo.isLoggedIn === false) {
+        loginWrap.classList.add('show', 'module');
+    }
 }
+
+
+const startTimer = (duration, type) => {
+    const { sessions } = pomodoroState;
+    let display = timerDisplay;
+    console.log(display);
+    let timer = duration,
+        minutes,
+        seconds;
+    // type[0] ? startButton.classList.add('grey-out') : startButton.classList.remove('grey-out');
+    sessions.sessionTypeActive = type;
+    startButton.classList.add("grey-out");
+    pauseButton.classList.add("show");
+    const updateTimer = () => {
+        //   minutes = parseInt(timer / 60, 10)
+        timerCount(timer);
+        minutes = pomodoroState.timer.currentMinutes;
+        console.log(minutes);
+        seconds = pomodoroState.timer.currentSeconds;
+        console.log(seconds);
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display.textContent = `${minutes}:${seconds}`;
+        timer--;
+        if (timer < 0) {
+            if (type === "work") {
+                console.log("work")
+                sessions.completedWorkSessionsCount++;
+            }
+            if (type === "shortBreak") {
+                sessions.completedShortBreak++;
+
+            }
+            if (type === "longBreak") {
+                sessions.completedLongBreak++;
+            }
+            sessions.totalCompletedSessions++;
+            sessions.nextSessionAttempt = sessions.totalCompletedSessions + 1;
+            breakModals(type);
+            console.log('nextSessionAttempt ' + sessions.nextSessionAttempt);
+            clearInterval(endInterval);
+            timerReset();
+            updateUI();
+        }
+        console.log(JSON.stringify(pomodoroState, null, 2));
+    };
+    timer--;
+    updateTimer();
+    endInterval = setInterval(updateTimer, 1000);
+};
+
 
 const timerActivate = () => {
     const { timer, sessions } = pomodoroState;
@@ -76,14 +165,16 @@ timerPause = () => {
 };
 
 timerReset = () => {
-    const { timer } = pomodoroState;
+    const { timer, sessions } = pomodoroState;
     timer.isActive = false;
     timer.isPaused = false;
+    sessions.sessionTypeActive = null
+    startButton.classList.remove("grey-out");
     pauseButton.classList.remove("show");
     clearInterval(endInterval);
     timerCount(1500);
     timerDisplay.textContent = `${timer.currentMinutes}:${timer.currentSeconds}0`;
-    updateUI();
+
 };
 
 const timerCount = (timer) => {
@@ -92,40 +183,16 @@ const timerCount = (timer) => {
     pomodoroState.timer.currentSeconds = timer % 60;
 };
 
-
-// start timer
-
-const startTimer = (duration) => {
-    let display = timerDisplay;
-    console.log(display);
-    let timer = duration,
-        minutes,
-        seconds;
-    const updateTimer = () => {
-        //   minutes = parseInt(timer / 60, 10)
-        timerCount(timer);
-        minutes = pomodoroState.timer.currentMinutes;
-        console.log(minutes);
-        seconds = pomodoroState.timer.currentSeconds;
-        console.log(seconds);
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-        display.textContent = `${minutes}:${seconds}`;
-        timer--;
-        if (timer < 0) {
-            clearInterval(endInterval);
-            timerReset();
-            document.getElementById(breakPopup).style.display = "block";
-        }
-        console.log(JSON.stringify(pomodoroState, null, 2));
-    };
-    timer--;
-    updateTimer();
-    endInterval = setInterval(updateTimer, 1000);
+const breakModals = (type) => {
+    const { sessions } = pomodoroState;
+    type === "work" ? sessions.breaks.breakModal = true : sessions.breaks.breakModal = false;
+    (sessions.nextSessionAttempt > 3 && sessions.nextSessionAttempt % 3 === 0) ? (breakModalLong.classList.add("show"), breakModalShort.classList.add("hide")) : (breakModalLong.classList.remove("show"), breakModalShort.classList.remove("hide"));
+    updateUI();
 };
 
+const instertTask = (taskValue) => {
 
-const onTimerEnd = () => {};
+}
 
 
 /* Event Listeners */
@@ -137,9 +204,14 @@ function addClickListener(element, callback) {
 }
 
 addClickListener(startButton, function() {
-    startTimer(pomodoroState.settings.workDuration); // start timer
+    const { timer, sessions, settings } = pomodoroState;
+    let taskValue = taskName.value;
+    console.log(taskValue);
+    sessions.sessionDescription = taskValue;
+    taskDisplayElement.innerText = taskValue;
+    startTimer(settings.workDuration, sessions.sessionType[0]); // start timer
     timerActivate(); // activate timer
-    updateUI();
+    insertTask(taskValue);
 });
 
 addClickListener(pauseButton, function() {
@@ -151,47 +223,102 @@ addClickListener(resetButton, function() {
 });
 
 addClickListener(takeBreak, function() {
-    document.getElementById("breakPopup").style.display = "none";
+    const { settings } = pomodoroState;
+    breakModals();
+    startTimer(settings.shortBreakDuration, "shortBreak");
+});
+
+
+addClickListener(takeLongBreak, function() {
+    const { settings } = pomodoroState;
+    breakModals();
+    startTimer(settings.longBreakDuration, "longBreak");
 });
 
 addClickListener(doc, function() {
     console.log(JSON.stringify(pomodoroState, null, 2));
 });
 
+
+addClickListener(submitButton, function(event) {
+    event.preventDefault();
+    const userName = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    login(userName, password);
+});
+
 /* perl api */
 
-// addClickListener('document', function() {
-//     console.log(JSON.stringify(pomodoroState, null, 2));
-// })
 
-// fetch('scripts/perl/script.cgi', { /*explain how this works and what it does. # This is a POST request to the server, the server will run the script and return the result, which is then parsed as JSON, and then logged to the console., */
-//         method: 'POST', // *GET, POST, PUT, DELETE, etc.
-//         header: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({
-//             description: 'Task Description',
-//             start_time: '2021-01-01 09:00:00'
-//         })
-//     })
-//     .then(response => response.json()) // parse the response as JSON
-//      .then(data => console.log(data)); // data is the response from the server
 
-/* probably not needed */
+function login(username, password) {
+    return fetch('http://208.113.200.163/pomodoro/scripts/perl/login.pl', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+            credentials: 'include' // this is needed to send cookies
+        })
+        .then(response => response.json())
+        .then(data => {
+            // store user info in state
+            console.log(data)
+            console.log(sessionStorage)
+            const { userInfo } = pomodoroState;
+            // userInfo.username = username;
+            sessionStorage.setItem('username', username); // how can i see what is in this data object? you can console.log(data)
+            userInfo.username = sessionStorage.getItem('username');
+            console.log(username);
+        })
+        .catch(error => console.error('Error:', error));
+}
 
-// const timerPause = () => {
-//     const { timer } = pomodoroState;
-//     if (!timer.isPaused) {
-//         timer.isPaused = true;
-//         clearInterval(endInterval);
-//     }
-// };
+function signUp(username, password) {
+    return fetch('http://208.113.200.163/pomodoro/scripts/perl/signup.pl', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        })
+        .then(response => response.json())
+        .catch(error => console.error('Error:', error));
+}
 
-// const timerResume = () => {
-//     const { timer } = pomodoroState;
-//     if (timer.isPaused) {
-//         timer.isPaused = false;
-//         const display = document.getElementById('timerDisplay'); // display timer
-//         startTimer(timer.currentCountTime, display); // start timer
-//     }
-// };
+function insertTask(taskValue) {
+    return fetch('http://208.113.200.163/pomodoro/scripts/perl/insert_task.pl', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                description: taskValue,
+                start_time: new Date().toISOString()
+            })
+        })
+        .then(response => response.json())
+        .catch(error => console.error('Error:', error));
+}
+
+fetch('http://208.113.200.163/pomodoro/scripts/perl/api.pl')
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error))
+
+fetch('http://208.113.200.163/pomodoro/scripts/perl/is_logged_in.pl', {
+        method: 'GET',
+        credentials: 'include' // this is needed to send cookies
+    })
+    .then(response => response.json())
+    .then(data => {
+        const { userInfo } = pomodoroState;
+        if (data.isLoggedIn) {
+            console.log('User is logged in');
+            userInfo.isLoggedIn = true;
+            updateUI();
+        } else {
+            console.log('User is not logged in');
+            userInfo.isLoggedIn = false;
+            updateUI();
+        }
+    })
+    .catch(error => console.error('Error:', error));
+
+
 
 // # how to show tree two levels down with cli tree command. # tree -L 2
