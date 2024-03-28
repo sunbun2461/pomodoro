@@ -62,7 +62,7 @@ const submitButton = document.querySelector("#submit");
 const doc = document;
 const body = document.querySelector("body");
 const loginWrap = document.querySelector("#loginWrap");
-
+const yoUser = document.getElementById("yoUser");
 let endInterval;
 const onTimerEnd = () => {};
 
@@ -89,6 +89,12 @@ function updateUI() {
     }
     if (userInfo.isLoggedIn === false) {
         loginWrap.classList.add('show', 'module');
+    }
+    if (userInfo.isLoggedIn === true) {
+        userInfo.username = sessionStorage.getItem('username');
+        loginWrap.classList.remove('show', 'module');
+        //need to clear inner text. 
+        yoUser.textContent = userInfo.username;
     }
 }
 
@@ -268,6 +274,10 @@ function login(username, password) {
             sessionStorage.setItem('username', username); // how can i see what is in this data object? you can console.log(data)
             userInfo.username = sessionStorage.getItem('username');
             console.log(username);
+            if (username) {
+                userInfo.isLoggedIn = true;
+                updateUI();
+            }
         })
         .catch(error => console.error('Error:', error));
 }

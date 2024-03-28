@@ -152,10 +152,11 @@ main.clock-container section.clock-split section.clock-split__left.dashboard div
 }
 main.clock-container section.clock-split section.clock-split__left.dashboard .task-display__wrap ul {
   list-style: none;
-  margin: 0;
+  margin: 0.5rem 0 0;
   padding: 0 0 0 0.5rem;
 }
 main.clock-container section.clock-split section.clock-split__left.dashboard .task-display__wrap ul li {
+  margin-bottom: 0.5rem;
   font-size: 0.75rem;
 }
 main.clock-container section.clock-split section.clock-split__right {
