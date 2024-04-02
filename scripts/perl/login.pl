@@ -11,18 +11,34 @@ use auth;
 
 
 my $cgi = CGI->new;
-my $json_text = $cgi->param('POSTDATA');
+my $json_text = $cgi->param('POSTDATA') || '{}';
 my $json = JSON->new;
-my $data = $json->decode($json_text); # decode the JSON string
+my $data;
+
+eval {
+    $data = $json->decode($json_text);
+};
+if($@) { # this means there was an error in the JSON, the $@ variable contains the error message
+    print $cgi->header(-type => 'application/json', -Access_Control_Allow_Origin => '*');
+    print encode_json({ message => "Invalid JSON in request: $@"});
+    exit;
+}
+
+
+
+
 my $username = $data->{'username'}; # get the username from the JSON
 my $password = $data->{'password'}; # get the password from the JSON
+my $userId = auth::check_password($username, $password);
 
-if (auth::check_password($username, $password)){
+
+if ($userId){
     my $session = new CGI::Session("driver:File", undef, {Directory => '/tmp'});
     $session->param('username', $username);
+    $session->param('userId', $userId);# this comes from the check_password function
     my $cookie = $cgi->cookie(CGISESSID => $session->id);
     print $cgi->header(-type => 'application/json', -Access_Control_Allow_Origin => '*', -cookie => $cookie);
-    print encode_json({ message => "Login successful. Hello $username"});
+    print encode_json({ message => "Login successful. Hello $username", userId => $userId});
 } else {
     print $cgi->header(-type => 'application/json', -Access_Control_Allow_Origin => '*');
     print encode_json({ message => "Invalid username or password."});

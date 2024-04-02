@@ -5,6 +5,7 @@ const pomodoroState = {
         isPaused: false, // paused or not
         currentMinutes: 0,
         currentSeconds: 0,
+        currentTime: 0,
     },
     sessions: {
         sessionType: ["work", "shortBreak", "longBreak"],
@@ -53,18 +54,20 @@ const breakModalWrap = document.querySelector(".break-modal__wrap");
 const takeBreak = document.querySelector("#takeBreak");
 const takeLongBreak = document.querySelector("#takeLongBreak");
 const taskName = document.querySelector("#taskName");
+const oldTasks = document.querySelector("#oldTasks");
 const breakModalShort = document.querySelector("#breakModalShort");
 const breakModalLong = document.querySelector("#breakModalLong");
 let taskDisplayElement = document.querySelector(
     `.task-display__wrap li[data-id="1"]`
 );
-const submitButton = document.querySelector("#submit");
+const logoutButton = document.querySelector("#logout");
+const loginButton = document.querySelector("#loginButton");
 const doc = document;
 const body = document.querySelector("body");
 const loginWrap = document.querySelector("#loginWrap");
 const yoUser = document.getElementById("yoUser");
-let endInterval;
 const onTimerEnd = () => {};
+let endInterval;
 
 
 
@@ -87,17 +90,21 @@ function updateUI() {
         breakModalWrap.classList.remove("show");
         body.classList.remove("hidden");
     }
-    if (userInfo.isLoggedIn === false) {
-        loginWrap.classList.add('show', 'module');
-    }
     if (userInfo.isLoggedIn === true) {
         userInfo.username = sessionStorage.getItem('username');
         loginWrap.classList.remove('show', 'module');
-        //need to clear inner text. 
+        logoutButton.classList.add('show');
+        oldTasks.classList.add('show');
+        // need to clear inner text. 
         yoUser.textContent = userInfo.username;
+    } else {
+        loginWrap.classList.add('show', 'module');
+        logoutButton.classList.remove('show');
+        oldTasks.classList.remove('show');
+        yoUser.textContent = `yo`;
     }
+    setCurrentTime(timer);
 }
-
 
 const startTimer = (duration, type) => {
     const { sessions } = pomodoroState;
@@ -196,10 +203,15 @@ const breakModals = (type) => {
     updateUI();
 };
 
-const instertTask = (taskValue) => {
+const addToCurrentTasks = (taskValue) => {
+    //only tasks of the last 24 hours, so i need to figure out how to get the time of the task and the current date. 
 
 }
 
+const setCurrentTime = (timer) => {
+    timer.currentTime = new Date().toISOString();
+    console.log(timer.currentTime);
+}
 
 /* Event Listeners */
 
@@ -246,19 +258,23 @@ addClickListener(doc, function() {
 });
 
 
-addClickListener(submitButton, function(event) {
+addClickListener(loginButton, function(event) {
     event.preventDefault();
     const userName = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     login(userName, password);
 });
 
+addClickListener(logoutButton, function(event) {
+    logout();
+});
+
 /* perl api */
 
-
+const URL = 'http://208.113.200.163/pomodoro/scripts/perl/';
 
 function login(username, password) {
-    return fetch('http://208.113.200.163/pomodoro/scripts/perl/login.pl', {
+    return fetch(`${URL}login.pl`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password }),
@@ -277,13 +293,33 @@ function login(username, password) {
             if (username) {
                 userInfo.isLoggedIn = true;
                 updateUI();
+                console.log(`pomo state ${JSON.stringify(pomodoroState, null, 2)}`)
             }
         })
         .catch(error => console.error('Error:', error));
 }
 
+
+function logout() {
+    return fetch(`${URL}logout.pl`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include' // this is needed to send cookies
+        })
+        .then(response => response.json())
+        .then(data => {
+            const { userInfo } = pomodoroState;
+            if (data.message === "Session deleted.") {
+                userInfo.isLoggedIn = false;
+                updateUI();
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
 function signUp(username, password) {
-    return fetch('http://208.113.200.163/pomodoro/scripts/perl/signup.pl', {
+    return fetch(`${URL}signup.pl`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -292,8 +328,9 @@ function signUp(username, password) {
         .catch(error => console.error('Error:', error));
 }
 
+
 function insertTask(taskValue) {
-    return fetch('http://208.113.200.163/pomodoro/scripts/perl/insert_task.pl', {
+    return fetch(`${URL}insert_task.pl`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -305,12 +342,12 @@ function insertTask(taskValue) {
         .catch(error => console.error('Error:', error));
 }
 
-fetch('http://208.113.200.163/pomodoro/scripts/perl/api.pl')
+fetch(`${URL}api.pl`)
     .then(response => response.json())
     .then(data => console.log(data))
     .catch(error => console.error('Error:', error))
 
-fetch('http://208.113.200.163/pomodoro/scripts/perl/is_logged_in.pl', {
+fetch(`${URL}is_logged_in.pl`, {
         method: 'GET',
         credentials: 'include' // this is needed to send cookies
     })

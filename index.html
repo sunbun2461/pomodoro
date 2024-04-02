@@ -31,22 +31,25 @@
                         <form id="loginForm">
                             <input type="text" id="username" placeholder="Username" class="login__input">
                             <input type="password" id="password" placeholder="Password" class="login__input">
-                            <input type="submit" id="submit" value="Login" class="login__submit">
+                            <input type="submit" id="loginButton" value="Login" class="login__submit">
                         </form>
                     </div>
                 </div>
                 <div class="task-display__wrap">
                     <h2>Task <span class="accent">List</span></h2>
                     <!-- I need to add a node here instead. or whatever that is, ill have to look it up -->
-                    <div class="module">
+                    <div class="module current-tasks">
                         Current Tasks
                         <ul>
                             <li data-id="1"></li>
                         </ul>
                     </div>
-                    <div class="module">
+                    <div class="module old-tasks" id="oldTasks">
                         Old Tasks
                     </div>
+                </div>
+                <div id="logout" class="logout module">
+                    <button id="logoutButton">Logout</button>
                 </div>
             </section>
             <section class="clock-split__right clock">

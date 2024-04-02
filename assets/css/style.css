@@ -130,6 +130,7 @@ main.clock-container section.clock-split section.clock-split__left.dashboard div
   overflow: hidden;
 }
 main.clock-container section.clock-split section.clock-split__left.dashboard div.login input {
+  max-width: -webkit-fill-available;
   margin: 0.25rem;
   padding: 0.5rem;
   font-size: 1.25rem;
@@ -158,6 +159,26 @@ main.clock-container section.clock-split section.clock-split__left.dashboard .ta
 main.clock-container section.clock-split section.clock-split__left.dashboard .task-display__wrap ul li {
   margin-bottom: 0.5rem;
   font-size: 0.75rem;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard .task-display__wrap .old-tasks {
+  display: none;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard .task-display__wrap .old-tasks.show {
+  display: block;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard div.logout {
+  display: none;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard div.logout.show {
+  display: block;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard div.logout button {
+  padding: 1rem 2.5rem;
+  background: #d96a4c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 main.clock-container section.clock-split section.clock-split__right {
   display: flex;
@@ -206,7 +227,7 @@ main.clock-container section.clock-split section.clock-split__right .tasks div.b
 }
 main.clock-container section.clock-split section.clock-split__right .tasks div.buttons button {
   padding: 1rem 2.5rem;
-  background: #F44336;
+  background: #d96a4c;
   color: white;
   border: none;
   border-radius: 5px;

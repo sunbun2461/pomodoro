@@ -26,6 +26,15 @@ $accent_green:#7bb58a;
     border-radius: $width;
 }
 
+@mixin button($color: $accent) {
+    padding: 1rem 2.5rem;
+    background: $color;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 @mixin module() {
     width: fit-content;
     margin-bottom: 2rem;
@@ -158,6 +167,7 @@ main.clock-container {
                     overflow: hidden;
                 }
                 input {
+                    max-width: -webkit-fill-available;
                     margin: .25rem;
                     padding: .5rem;
                     font-size: 1.25rem;
@@ -189,6 +199,21 @@ main.clock-container {
                         margin-bottom: .5rem;
                         font-size: .75rem;
                     }
+                }
+                .old-tasks {
+                    display: none;
+                    &.show {
+                        display: block;
+                    }
+                }
+            }
+            div.logout {
+                display: none;
+                &.show {
+                    display: block;
+                }
+                button {
+                    @include button();
                 }
             }
         }
@@ -235,12 +260,7 @@ main.clock-container {
                     gap: 1rem;
                     margin-bottom: 2rem;
                     button {
-                        padding: 1rem 2.5rem;
-                        background: #F44336;
-                        color: white;
-                        border: none;
-                        border-radius: 5px;
-                        cursor: pointer;
+                        @include button();
                     }
                     .button__start {
                         background-color: $accent_green;
