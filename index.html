@@ -32,8 +32,16 @@
                             <input type="text" id="username" placeholder="Username" class="login__input">
                             <input type="password" id="password" placeholder="Password" class="login__input">
                             <input type="submit" id="loginButton" value="Login" class="login__submit">
+                            <button class="login__signup" id="signupButton">Sign Up</button>
                         </form>
                     </div>
+                </div>
+                <div class="signup module">
+                    <form id="signupForm">
+                        <input type="text" id="signupUsername" placeholder="Choose Username" class="signup__input">
+                        <input type="text" id="signupPassword" placeholder="Choose Password" class="signup__input">
+                        <input type="submit" id="signupSubmit" value="Create Account" class="signup__submit">
+                    </form>
                 </div>
                 <div class="task-display__wrap">
                     <h2>Task <span class="accent">List</span></h2>
@@ -46,6 +54,9 @@
                     </div>
                     <div class="module old-tasks" id="oldTasks">
                         Old Tasks
+                        <ul>
+
+                        </ul>
                     </div>
                 </div>
                 <div id="logout" class="logout module">

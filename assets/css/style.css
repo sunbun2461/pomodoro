@@ -91,7 +91,13 @@ body.hidden {
 }
 
 main.clock-container {
-  height: 100%;
+  padding: 0 0 5rem;
+}
+@media screen and (min-width: 768px) {
+  main.clock-container {
+    height: 100%;
+    padding: 0;
+  }
 }
 main.clock-container section.clock-split {
   height: 100%;
@@ -129,27 +135,58 @@ main.clock-container section.clock-split section.clock-split__left.dashboard div
 main.clock-container section.clock-split section.clock-split__left.dashboard div.login div.login-inner {
   overflow: hidden;
 }
-main.clock-container section.clock-split section.clock-split__left.dashboard div.login input {
-  max-width: -webkit-fill-available;
+main.clock-container section.clock-split section.clock-split__left.dashboard form input {
+  width: 100%;
   margin: 0.25rem;
   padding: 0.5rem;
   font-size: 1.25rem;
   border: 1px solid rgba(110, 117, 120, 0.3529411765);
   border-radius: 5px;
 }
-main.clock-container section.clock-split section.clock-split__left.dashboard div.login input.login__submit {
-  display: block;
-  width: fit-content;
-  padding: 0.5rem 1rem;
-  background: white;
-  color: #7bb58a;
-  cursor: pointer;
-  border-radius: 5px;
-  border: #7bb58a 1px solid;
-  border-radius: 5px;
+@media screen and (min-width: 768px) {
+  main.clock-container section.clock-split section.clock-split__left.dashboard form input {
+    max-width: -webkit-fill-available;
+  }
 }
-main.clock-container section.clock-split section.clock-split__left.dashboard div.login input::placeholder {
+main.clock-container section.clock-split section.clock-split__left.dashboard form input.login__submit {
+  width: fit-content;
+  padding: 0.75rem 1rem;
+  background: white;
+  color: white;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
+  color: #7bb58a;
+  border: #7bb58a 1px solid;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard form input.login__submit:hover {
+  background-color: #7bb58a;
+  color: white;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard form input::placeholder {
   color: #ccc;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard form .login__submit,
+main.clock-container section.clock-split section.clock-split__left.dashboard form .login__signup {
+  display: inline-block;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard form .login__signup {
+  width: fit-content;
+  padding: 0.75rem 1rem;
+  background: white;
+  color: white;
+  border: none;
+  background-color: #7bb58a;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #7bb58a;
+}
+main.clock-container section.clock-split section.clock-split__left.dashboard form .login__signup:hover {
+  background-color: white;
+  color: #7bb58a;
 }
 main.clock-container section.clock-split section.clock-split__left.dashboard .task-display__wrap ul {
   list-style: none;
@@ -173,12 +210,15 @@ main.clock-container section.clock-split section.clock-split__left.dashboard div
   display: block;
 }
 main.clock-container section.clock-split section.clock-split__left.dashboard div.logout button {
-  padding: 1rem 2.5rem;
-  background: #d96a4c;
+  width: fit-content;
+  padding: 0.75rem 1rem;
+  background: white;
   color: white;
   border: none;
-  border-radius: 5px;
+  background-color: #d96a4c;
   cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
 }
 main.clock-container section.clock-split section.clock-split__right {
   display: flex;
@@ -226,12 +266,15 @@ main.clock-container section.clock-split section.clock-split__right .tasks div.b
   margin-bottom: 2rem;
 }
 main.clock-container section.clock-split section.clock-split__right .tasks div.buttons button {
-  padding: 1rem 2.5rem;
-  background: #d96a4c;
+  width: fit-content;
+  padding: 0.75rem 1rem;
+  background: white;
   color: white;
   border: none;
-  border-radius: 5px;
+  background-color: #d96a4c;
   cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
 }
 main.clock-container section.clock-split section.clock-split__right .tasks div.buttons .button__start {
   background-color: #7bb58a;

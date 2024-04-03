@@ -35,7 +35,9 @@ const pomodoroState = {
     userInfo: {
         username: "",
         password: "",
+        userId: "",
         isLoggedIn: false,
+        oldTasks: [],
     },
 };
 
@@ -288,7 +290,9 @@ function login(username, password) {
             const { userInfo } = pomodoroState;
             // userInfo.username = username;
             sessionStorage.setItem('username', username); // how can i see what is in this data object? you can console.log(data)
+            sessionStorage.setItem('userId', data.userId); // to make this an integer, you can parseInt(data.userId)
             userInfo.username = sessionStorage.getItem('username');
+            userInfo.userId = parseInt(sessionStorage.getItem('userId'));
             console.log(username);
             if (username) {
                 userInfo.isLoggedIn = true;
@@ -329,18 +333,46 @@ function signUp(username, password) {
 }
 
 
+function getOldTasks() {
+    const userId = sessionStorage.getItem('userId');
+    // const username = sessionStorage.getItem('username');
+    return fetch(`${URL}get_old_tasks.pl?userId=${encodeURIComponent(userId)}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const { userInfo } = pomodoroState;
+            userInfo.oldTasks = data;
+            oldTaskList = document.querySelector('#oldTasks ul');
+            userInfo.oldTasks.forEach(task => {
+                const taskElement = document.createElement('li');
+                taskElement.textContent = task; // this is the task description. for regular forEach to tap into index you can do forEach((task, index) => {})
+                oldTaskList.appendChild(taskElement);
+            })
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
+
 function insertTask(taskValue) {
+    const userId = sessionStorage.getItem('userId');
     return fetch(`${URL}insert_task.pl`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 description: taskValue,
+                userId: userId,
                 start_time: new Date().toISOString()
             })
         })
         .then(response => response.json())
         .catch(error => console.error('Error:', error));
 }
+
+
 
 fetch(`${URL}api.pl`)
     .then(response => response.json())
@@ -366,6 +398,6 @@ fetch(`${URL}is_logged_in.pl`, {
     })
     .catch(error => console.error('Error:', error));
 
-
+setTimeout(() => { getOldTasks() }, 1000);
 
 // # how to show tree two levels down with cli tree command. # tree -L 2
